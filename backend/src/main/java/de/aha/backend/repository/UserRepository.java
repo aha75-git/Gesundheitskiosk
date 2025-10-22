@@ -28,8 +28,10 @@ public interface UserRepository extends AbstractRepository<User, String>{
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
 
-    List<User> findByRoleAndLanguagesContainingAndSpecialization(UserRole role, String language, String specialization);
-    List<User> findByRoleAndLanguagesContaining(UserRole role, String language);
-    List<User> findByRoleAndSpecialization(UserRole role, String specialization);
+    List<User> findByRoleAndProfileLanguagesContainingAndProfileSpecializationIgnoreCase(UserRole role, String language, String specialization);
+
+    //List<User> findByRoleAndLanguagesContainingAndSpecialization(UserRole role, String language, String specialization);
+    //List<User> findByRoleAndLanguagesContaining(UserRole role, String language);
+    //List<User> findByRoleAndSpecialization(UserRole role, String specialization);
     List<User> findByRole(UserRole role);
 }

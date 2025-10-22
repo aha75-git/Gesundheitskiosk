@@ -45,8 +45,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/authenticate").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/").permitAll()
                         // Alle anderen Endpoints benötigen Authentifizierung
-                        .anyRequest().authenticated()
+                        //.anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
+                // OAuth aktivieren
+                .oauth2Login(o -> o.
+                        defaultSuccessUrl("http://localhost:5173"))
                 // .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .logout(logout -> logout
