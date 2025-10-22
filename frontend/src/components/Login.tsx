@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useAuth } from '../api/AuthContext';
-import type {LoginRequest} from '../types/types.ts';
+import type {LoginRequest, User} from '../types/types.ts';
+import axios from "axios";
 
 const Login: React.FC = () => {
     const { login } = useAuth();
     const [formData, setFormData] = useState<LoginRequest>({
-        username: '',
+        email: '',
         password: ''
     });
     const [error, setError] = useState('');
+    const [user, setUser] = useState<User | undefined | null>(undefined);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -17,13 +19,34 @@ const Login: React.FC = () => {
         try {
             await login(formData);
         } catch (err) {
-            setError('Login failed. Please check your credentials. ' + err);
+            console.log('Login failed. Please check your credentials. \n' + err);
+            setError('Login failed. Please check your credentials.');
         }
     };
 
     const handleGitHubLogin = () => {
-        window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+        //window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+
+        const host:string = window.location.host === "localhost:5173" ? "http://localhost:8080" : window.location.origin;
+        window.open(host + "/oauth2/authorization/github", "_self" );
     };
+
+    const loadUser = () => {
+        axios.get("/api/v1/auth/me")
+            .then((res) => {
+                setUser(res.data);
+                console.log(res.data);
+                console.log(user);
+            })
+            .catch((err) => {
+                setUser(null);
+                console.log(err);
+            })
+    }
+
+    useEffect(() => {
+        loadUser();
+    }, []);
 
     return (
         <div className="login-container">
@@ -32,11 +55,11 @@ const Login: React.FC = () => {
 
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Username:</label>
+                    <label>E-Mail:</label>
                     <input
                         type="text"
-                        value={formData.username}
-                        onChange={(e) => setFormData({...formData, username: e.target.value})}
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
                         required
                     />
                 </div>

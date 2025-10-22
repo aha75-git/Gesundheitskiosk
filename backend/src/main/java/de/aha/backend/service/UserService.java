@@ -162,6 +162,16 @@ public class UserService implements UserDetailsService {
     }
 
     /*
+    public List<UserResponse> findAll() {
+        User user = userRepository.findAll();
+        //return mapper.toResponse(repository.getOrThrow(id));
+
+        return mapToResponse(user);
+    }
+
+     */
+
+    /*
     private AdvisorResponse mapToAdvisorResponse(User advisor) {
         return new AdvisorResponse(
                 advisor.id(),

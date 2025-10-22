@@ -19,7 +19,8 @@ const Register: React.FC = () => {
         try {
             await register(formData);
         } catch (err) {
-            setError('Registration failed. Username or email may already exist. ' + err);
+            console.log('Registration failed. Username or email may already exist. \n' + err);
+            setError('Registration failed. Username or email may already exist.');
         }
     };
 
