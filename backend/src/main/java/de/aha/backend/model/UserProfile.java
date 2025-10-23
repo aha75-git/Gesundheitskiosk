@@ -3,7 +3,7 @@ package de.aha.backend.model;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
@@ -12,7 +12,7 @@ public class UserProfile {
     private MedicalInfo medicalInfo;
     private ContactInfo contactInfo;
     private String specialization;
-    private Set<String> languages;
+    private List<String> languages;
     private String qualification;
     private String bio;
     private Double rating;
