@@ -1,15 +1,15 @@
 export interface User {
+    id: string;
     username: string;
     email: string;
     role: UserRole;
+    createdAt: string;
 }
 
 export interface AuthResponse {
     token: string;
     type: string;
-    username: string;
-    role: UserRole;
-    email: string;
+    user: User;
 }
 
 export interface LoginRequest {

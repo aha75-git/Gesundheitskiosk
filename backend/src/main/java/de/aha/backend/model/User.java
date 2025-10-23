@@ -8,10 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Represents a user entity stored in MongoDB.
@@ -79,7 +78,7 @@ public class User extends AbstractDocument implements UserDetails {
     /**
      * User consents
      */
-    private Set<Consent> consents;
+    private List<Consent> consents;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
