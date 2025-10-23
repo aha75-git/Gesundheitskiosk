@@ -1,20 +1,17 @@
 package de.aha.backend.dto.user;
 
 import de.aha.backend.model.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * DTO for user response.
  * Contains user's email information.
  */
-@Getter
-@Setter
+@Data
 @Builder
 public class UserResponse {
     private String token;
+    @Builder.Default
     private String type = "Bearer";
     private String username;
     private UserRole role;

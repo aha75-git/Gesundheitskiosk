@@ -1,22 +1,24 @@
 package de.aha.backend.service;
 
 import de.aha.backend.dto.user.*;
-import de.aha.backend.exception.AppRuntimeException;
+import de.aha.backend.exception.AppAuthenticationException;
 import de.aha.backend.exception.ExecutionConflictException;
 import de.aha.backend.model.User;
 import de.aha.backend.model.UserRole;
 import de.aha.backend.repository.UserRepository;
 import de.aha.backend.security.TokenInteract;
 import de.aha.backend.util.PasswordUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import static de.aha.backend.mapper.UserMapper.*;
 
 @Slf4j
 @Service
@@ -67,7 +69,7 @@ public class UserService implements UserDetailsService {
      */
     public void create(UserCreateRequest request) {
         checkUniqueEmail(request.email());
-        userRepository.save(this.mapToUser(request, PasswordUtil.hash(request.password())));
+        userRepository.save(mapToUser(request, PasswordUtil.hash(request.password())));
     }
 
     public UserResponse registerUser(@Valid RegisterRequest request) {
@@ -82,14 +84,14 @@ public class UserService implements UserDetailsService {
 
     public UserLoginResponse authenticateUser(@Valid UserLoginRequest request) {
         var user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+                .orElseThrow(() -> new AppAuthenticationException("Invalid credentials"));
 
         if (!PasswordUtil.matches(request.password(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new AppAuthenticationException("Invalid credentials");
         }
 
         if (!user.isEnabled()) {
-            throw new RuntimeException("User account is not active");
+            throw new AppAuthenticationException("User account is not active");
         }
 
         //UserResponse response = mapper.toResponse(user);
@@ -118,6 +120,43 @@ public class UserService implements UserDetailsService {
     }
 
     /**
+     * Updates the password of an existing user after verifying the old password.
+     *
+     * @param userId  ID of the user to update
+     * @param request request containing old and new passwords
+     * @return response containing updated user details
+     */
+    public UserResponse updatePassword(String userId, UserUpdatePasswordRequest request) {
+        User user = userRepository.getOrThrow(userId);
+        verifyPassword(request.oldPassword(), user.getPassword());
+        user.setPassword(PasswordUtil.hash(request.password()));
+        return mapToResponse(userRepository.save(user));
+    }
+
+    /**
+     * Deletes a user by ID.
+     *
+     * @param userId ID of the user to delete
+     */
+    public void remove(String userId) {
+        User user = userRepository.getOrThrow(userId);
+        userRepository.delete(user);
+    }
+
+    /**
+     * Finds a user by email or throws BadCredentialsException if not found.
+     *
+     * @param email user's email address
+     * @return User entity
+     */
+    public User findByEmail(String email) {
+        return userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new BadCredentialsException(
+                        "User not found with email: " + email
+                ));
+    }
+
+    /**
      * Checks if the email is unique in the database.
      * Throws ExecutionConflictException if a user with the email already exists.
      *
@@ -131,35 +170,43 @@ public class UserService implements UserDetailsService {
                 });
     }
 
-    private User mapToUser(RegisterRequest request) {
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setRole(request.getRole());
-        user.setProvider("local");
-        user.setProviderId(request.getPassword());
-        user.setUsername(request.getUsername());
-        return user;
+    /**
+     * Verifies the raw password against the stored password hash.
+     * Throws BadCredentialsException if the password is invalid.
+     *
+     * @param rawPassword  plain text password
+     * @param passwordHash hashed password
+     */
+    private void verifyPassword(String rawPassword, String passwordHash) {
+        if (!PasswordUtil.matches(rawPassword, passwordHash)) {
+            throw new BadCredentialsException("Invalid password");
+        }
     }
 
-    private User mapToUser(UserCreateRequest request, String passwordHash) {
-        User user = new User();
-        user.setEmail(request.email());
-        user.setPassword(passwordHash);
-        user.setRole(UserRole.USER);
-        user.setProvider("local");
-        user.setProviderId(passwordHash);
-        return user;
+    /**
+     * Authenticates a user by ID or email and returns a login response with JWT token.
+     *
+     * @param request user login request
+     * @return login response containing JWT token and user info
+     */
+    public UserLoginResponse getToken(UserLoginRequest request) {
+        User user = findByEmail(request.email());
+        verifyPassword(request.password(), user.getPassword());
+        UserResponse response = mapToResponse(user);
+        return mapToLoginResponse(response, tokenInteract.generateToken(loadUserByUsername(user.getId())));
     }
 
-    private UserResponse mapToResponse(User user) {
-        return UserResponse.builder()
-                .email(user.getEmail())
-                .role(user.getRole())
-                .token(user.getProviderId())
-                .username(user.getUsername())
-                .build();
+    /**
+     * Validates the JWT token from the HTTP request.
+     *
+     * @param request HTTP servlet request
+     * @return true if token is valid, false otherwise
+     */
+    public Boolean validateToken(HttpServletRequest request) {
+        String token = tokenInteract.getToken(request);
+        return tokenInteract.validateToken(token);
     }
+
 
     /*
     public List<UserResponse> findAll() {
