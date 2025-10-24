@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -193,4 +194,14 @@ public class RestExceptionHandler {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage()).findFirst().orElse("ops!");
         return buildResponse(BAD_REQUEST, ErrorType.BAD_REQUEST, errors, ex);
     }
+
+    /**
+     * Handles AppAuthenticationException (authorization errors).
+     */
+    @ResponseStatus(UNAUTHORIZED)
+    @ExceptionHandler(AppAuthenticationException.class)
+    protected ResponseEntity<ResponseError> handleAppAuthenticationException(AppAuthenticationException ex) {
+        return buildResponse(UNAUTHORIZED, ErrorType.AUTHORIZATION_ERROR, ex.getMessage(), ex);
+    }
+
 }

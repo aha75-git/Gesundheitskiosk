@@ -3,7 +3,9 @@ package de.aha.backend.dto.user;
 import de.aha.backend.model.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,8 +14,7 @@ import lombok.Setter;
  * Contains email, username and password fields with validation constraints.
  * The field role is per default UserRole.USER
  */
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 public class RegisterRequest {
     @NotBlank(message = "Username is required")
@@ -24,6 +25,7 @@ public class RegisterRequest {
     private String email;
 
     @NotBlank(message = "Password is required")
+    @Size(min = 5, max = 30, message = "Password must be between 5 and 30 characters")
     private String password;
 
     private UserRole role = UserRole.USER;
