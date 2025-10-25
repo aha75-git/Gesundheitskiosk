@@ -30,6 +30,10 @@ function App() {
     const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
     const [currentUser, setCurrentUser] = useState<User | null>(null);
 
+    console.log('token: ' + localStorage.getItem('token'));
+    console.log('user: ' + localStorage.getItem('user'));
+    console.log('currentUser: ' + currentUser);
+
     const handleLoginSuccess = (authResponse: AuthResponse) => {
         setCurrentUser(authResponse.user);
         localStorage.setItem('token', authResponse.token);

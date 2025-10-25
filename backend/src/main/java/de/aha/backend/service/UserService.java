@@ -83,7 +83,8 @@ public class UserService implements UserDetailsService {
     }
 
     public UserLoginResponse authenticateUser(@Valid UserLoginRequest request) {
-        var user = userRepository.findByEmail(request.email())
+        log.info("Authenticate user with email: {}", request.email());
+        var user = userRepository.findByEmailIgnoreCase(request.email())
                 .orElseThrow(() -> new AppAuthenticationException("Invalid credentials"));
 
         if (!PasswordUtil.matches(request.password(), user.getPassword())) {
@@ -97,12 +98,16 @@ public class UserService implements UserDetailsService {
         //UserResponse response = mapper.toResponse(user);
         //return mapper.toLoginResponse(response, tokenInteract.generateToken(loadUserByUsername(user.getId())));
 
-
+        // TODO soll die Methode "loadUserByUsername(user.getId())" noch einmal aufgerufen werden?
+        //  User haben wir bereits.
+        // Es handelt sich um UserDetails. Der Methodenname soll heißen "loadUserDetailsById()"
         var token = tokenInteract.generateToken(loadUserByUsername(user.getId()));
         var userResponse = mapToResponse(user);
 
         // Cache user session
         //cacheUserSession(token, user);
+
+        log.info("User authenticated successfully: {}", user.getId());
 
         return new UserLoginResponse(token, userResponse);
     }

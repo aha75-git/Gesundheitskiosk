@@ -1,19 +1,20 @@
 // components/LoginForm.tsx
-import React, {useState} from 'react';
-import {type AuthResponse, UserRole} from "../types/types.ts";
+import React, { useState} from 'react';
+import {type AuthResponse} from "../types/types.ts";
+// import axios from "axios";
 
 interface LoginFormProps {
     onLoginSuccess: (authResponse: AuthResponse) => void;
 }
 
 interface LoginData {
-    username: string;
+    email: string;
     password: string;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
     const [formData, setFormData] = useState<LoginData>({
-        username: '',
+        email: '',
         password: ''
     });
     const [showPassword, setShowPassword] = useState(false);
@@ -27,32 +28,40 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
 
         try {
             // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // In a real application, this would be an API call to your backend
-            // const response = await fetch('/api/auth/login', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(formData)
-            // });
-
-            // if (!response.ok) throw new Error('Login failed');
-            // const authResponse: AuthResponse = await response.json();
+            // await new Promise(resolve => setTimeout(resolve, 1500));
 
             // Mock successful login
-            const mockAuthResponse: AuthResponse = {
-                token: 'mock-jwt-token',
-                type: 'bearer',
-                user: {
-                    id: '1',
-                    username: formData.username,
-                    email: `${formData.username}@example.com`,
-                    role: UserRole.USER,
-                    createdAt: new Date().toISOString()
-                }
-            };
+            // const mockAuthResponse: AuthResponse = {
+            //     token: 'mock-jwt-token',
+            //     type: 'bearer',
+            //     user: {
+            //         id: '1',
+            //         username: formData.username,
+            //         email: `${formData.username}@example.com`,
+            //         role: UserRole.USER,
+            //         createdAt: new Date().toISOString()
+            //     }
+            // };
 
-            onLoginSuccess(mockAuthResponse);
+            // onLoginSuccess(mockAuthResponse);
+
+            // In a real application, this would be an API call to your backend
+            const response = await fetch('/api/v1/users/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Login failed');
+            }
+            const authResponse: AuthResponse = await response.json();
+            console.log(authResponse);
+
+            //localStorage.removeItem('auth_mode')
+            //localStorage.setItem('token', authResponse.token)
+
+            onLoginSuccess(authResponse);
         } catch (err) {
             console.error(err);
             setError('Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Daten.');
@@ -63,8 +72,28 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
 
     const handleGitHubLogin = () => {
         // In a real application, this would redirect to your backend OAuth endpoint
-        window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+        //window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+
+        const host:string = window.location.host === "localhost:5173" ? "http://localhost:8080" : window.location.origin;
+        window.open(host + "/oauth2/authorization/github", "_self" );
     };
+
+    // const loadUser = () => {
+    //     axios.get("/api/v1/auth/me")
+    //         .then(res => {
+    //             onLoginSuccess(res.data);
+    //             // setUser(res.data);
+    //             console.log(res.data);
+    //         })
+    //         .catch(err => {
+    //             // setUser(null);
+    //             console.log(err);
+    //         });
+    // }
+    //
+    // useEffect(() => {
+    //     loadUser();
+    // }, []);
 
     return (
         <div className="login-form">
@@ -83,8 +112,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
                         id="login-username"
                         className="form-control"
                         placeholder="Ihr Benutzername oder E-Mail"
-                        value={formData.username}
-                        onChange={(e) => setFormData({...formData, username: e.target.value})}
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
                         required
                         disabled={isLoading}
                     />

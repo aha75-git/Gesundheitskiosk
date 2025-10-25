@@ -30,14 +30,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const response: AuthResponse = await authApi.login(data);
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify({
-            username: response.username,
-            email: response.email,
-            role: response.role
+            id: response.user.id,
+            username: response.user.username,
+            email: response.user.email,
+            role: response.user.role,
+            createdAt: response.user.createdAt,
         }));
         setUser({
-            username: response.username,
-            email: response.email,
-            role: response.role
+            id: response.user.id,
+            username: response.user.username,
+            email: response.user.email,
+            role: response.user.role,
+            createdAt: response.user.createdAt,
         });
     };
 
@@ -45,14 +49,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const response: AuthResponse = await authApi.register(data);
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify({
-            username: response.username,
-            email: response.email,
-            role: response.role
+            id: response.user.id,
+            username: response.user.username,
+            email: response.user.email,
+            role: response.user.role,
+            createdAt: response.user.createdAt,
         }));
         setUser({
-            username: response.username,
-            email: response.email,
-            role: response.role
+            id: response.user.id,
+            username: response.user.username,
+            email: response.user.email,
+            role: response.user.role,
+            createdAt: response.user.createdAt,
         });
     };
 
