@@ -3,7 +3,6 @@ package de.aha.backend.service;
 import de.aha.backend.dto.user.UserLoginRequest;
 import de.aha.backend.dto.user.UserLoginResponse;
 import de.aha.backend.dto.user.UserResponse;
-import de.aha.backend.mapper.UserMapper;
 import de.aha.backend.model.User;
 import de.aha.backend.repository.UserRepository;
 import de.aha.backend.security.TokenInteract;
@@ -20,6 +19,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,7 +45,6 @@ class UserServiceTest {
 
     private User user;
     private UserLoginRequest loginRequest;
-    private UserResponse userResponse;
     private UserLoginResponse loginResponse;
 
     @BeforeEach
@@ -55,10 +54,11 @@ class UserServiceTest {
         user.setEmail("test@example.com");
         user.setUsername("test@example.com");
         user.setPassword("hashedPassword");
+        user.setCreationDate(LocalDateTime.now());
 
         loginRequest = new UserLoginRequest("test@example.com", "password");
 
-        userResponse = UserResponse.builder().email("test@example.com").build(); //new UserResponse("test@example.com");
+        UserResponse userResponse = UserResponse.builder().email("test@example.com").build(); //new UserResponse("test@example.com");
 
         loginResponse = new UserLoginResponse("token", userResponse);
     }
