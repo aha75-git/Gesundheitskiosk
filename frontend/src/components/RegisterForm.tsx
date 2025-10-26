@@ -1,6 +1,6 @@
 // components/RegisterForm.tsx
 import React, {useState} from 'react';
-import {type AuthResponse, UserRole} from "../types/types.ts";
+import {type AuthResponse, type RegisterRequest, UserRole} from "../types/types.ts";
 
 interface RegisterFormProps {
     onRegisterSuccess: (authResponse: AuthResponse) => void;
@@ -50,38 +50,50 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess }) => {
         e.preventDefault();
         setError('');
 
-        if (!validateForm()) return;
+        if (!validateForm()) {
+            return;
+        }
 
         setIsLoading(true);
 
         try {
             // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // In a real application, this would be an API call to your backend
-            // const response = await fetch('/api/auth/register', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(formData)
-            // });
-
-            // if (!response.ok) throw new Error('Registration failed');
-            // const authResponse: AuthResponse = await response.json();
+            // await new Promise(resolve => setTimeout(resolve, 1500));
 
             // Mock successful registration
-            const mockAuthResponse: AuthResponse = {
-                token: 'mock-jwt-token',
-                type: 'bearer',
-                user: {
-                    id: '1',
-                    username: formData.username,
-                    email: formData.email,
-                    role: formData.role,
-                    createdAt: new Date().toISOString()
-                }
+            // const mockAuthResponse: AuthResponse = {
+            //     token: 'mock-jwt-token',
+            //     type: 'bearer',
+            //     user: {
+            //         id: '1',
+            //         username: formData.username,
+            //         email: formData.email,
+            //         role: formData.role,
+            //         createdAt: new Date().toISOString()
+            //     }
+            // };
+            //
+            // onRegisterSuccess(mockAuthResponse);
+
+            const registerRequest: RegisterRequest = {
+                role: formData.role,
+                email: formData.email,
+                username: formData.username,
+                password: formData.password
             };
 
-            onRegisterSuccess(mockAuthResponse);
+            // In a real application, this would be an API call to your backend
+            const response = await fetch('/api/v1/users/register', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(registerRequest)
+            });
+
+            if (!response.ok) throw new Error('Registration failed');
+            const authResponse: AuthResponse = await response.json();
+
+            onRegisterSuccess(authResponse);
+
         } catch (err) {
             console.error(err);
             setError('Registrierung fehlgeschlagen. Benutzername oder E-Mail bereits vergeben.');
@@ -92,7 +104,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess }) => {
 
     const handleGitHubRegister = () => {
         // In a real application, this would redirect to your backend OAuth endpoint
-        window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+        // window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+
+        const host:string = window.location.host === "localhost:5173" ? "http://localhost:8080" : window.location.origin;
+        window.open(host + "/oauth2/authorization/github", "_self" );
     };
 
     return (

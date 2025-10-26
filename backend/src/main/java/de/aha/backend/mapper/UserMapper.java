@@ -6,15 +6,16 @@ import de.aha.backend.dto.user.UserLoginResponse;
 import de.aha.backend.dto.user.UserResponse;
 import de.aha.backend.model.User;
 import de.aha.backend.model.UserRole;
+import de.aha.backend.util.PasswordUtil;
 
 public class UserMapper {
     public static User mapToUser(RegisterRequest request) {
         User user = new User();
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(PasswordUtil.hash(request.getPassword()));
         user.setRole(request.getRole());
         user.setProvider("local");
-        user.setProviderId(request.getPassword());
+        user.setProviderId(PasswordUtil.hash(request.getPassword()));
         user.setUsername(request.getUsername());
         return user;
     }
@@ -35,6 +36,7 @@ public class UserMapper {
                 .role(user.getRole())
                 .token(user.getProviderId())
                 .username(user.getUsername())
+                .createdAt(user.getCreationDate().toString())
                 .build();
     }
 
