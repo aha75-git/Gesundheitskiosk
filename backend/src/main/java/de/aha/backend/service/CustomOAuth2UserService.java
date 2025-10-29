@@ -28,8 +28,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         //User user = userRepository.findByProviderAndProviderId(provider, providerId)
         User user = userRepository.findById(oAuth2User.getName())
                 .orElseGet(() -> createUser(oAuth2User, provider));
-        return new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(user.getRole().name())),
-                oAuth2User.getAttributes(), "id"); // Benutzer anhand seiner Role zurückgeben
+
+//        return new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(user.getRole().name())),
+//                oAuth2User.getAttributes(), "id"); // Benutzer anhand seiner Role zurückgeben
+        return oAuth2User;
     }
 
     private User createUser(OAuth2User oAuth2User, String provider) {

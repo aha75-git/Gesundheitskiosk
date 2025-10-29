@@ -1,31 +1,22 @@
-// components/RegisterForm.tsx
-import React, {useState} from 'react';
-import {type AuthResponse, type RegisterRequest, UserRole} from "../types/types.ts";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../api/AuthContext';
+import './AuthForms.css';
+import type {RegisterRequest} from "../types/types.ts";
 
-interface RegisterFormProps {
-    onRegisterSuccess: (authResponse: AuthResponse) => void;
-}
+export default function  RegisterForm(){
+    const { register } = useAuth();
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
 
-interface RegisterData {
-    username: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    role: UserRole;
-}
-
-const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess }) => {
-    const [formData, setFormData] = useState<RegisterData>({
+    const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
         confirmPassword: '',
-        role: UserRole.USER
+        role: 'USER' as 'USER' | 'ADVISOR' | 'ADMIN'
     });
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
 
     const validateForm = (): boolean => {
         if (formData.password !== formData.confirmPassword) {
@@ -56,62 +47,32 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess }) => {
 
         setIsLoading(true);
 
+        const registerRequest: RegisterRequest = {
+            role: formData.role,
+            email: formData.email,
+            username: formData.username,
+            password: formData.password
+        };
+
         try {
-            // Simulate API call
-            // await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // Mock successful registration
-            // const mockAuthResponse: AuthResponse = {
-            //     token: 'mock-jwt-token',
-            //     type: 'bearer',
-            //     user: {
-            //         id: '1',
-            //         username: formData.username,
-            //         email: formData.email,
-            //         role: formData.role,
-            //         createdAt: new Date().toISOString()
-            //     }
-            // };
-            //
-            // onRegisterSuccess(mockAuthResponse);
-
-            const registerRequest: RegisterRequest = {
-                role: formData.role,
-                email: formData.email,
-                username: formData.username,
-                password: formData.password
-            };
-
-            // In a real application, this would be an API call to your backend
-            const response = await fetch('/api/v1/users/register', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(registerRequest)
-            });
-
-            if (!response.ok) throw new Error('Registration failed');
-            const authResponse: AuthResponse = await response.json();
-
-            onRegisterSuccess(authResponse);
-
+            await register(registerRequest);
+            navigate('/dashboard');
         } catch (err) {
-            console.error(err);
+            console.log(err);
             setError('Registrierung fehlgeschlagen. Benutzername oder E-Mail bereits vergeben.');
         } finally {
             setIsLoading(false);
         }
     };
 
-    const handleGitHubRegister = () => {
-        // In a real application, this would redirect to your backend OAuth endpoint
+    const handleGitHubLogin = () => {
         // window.location.href = 'http://localhost:8080/oauth2/authorization/github';
-
         const host:string = window.location.host === "localhost:5173" ? "http://localhost:8080" : window.location.origin;
         window.open(host + "/oauth2/authorization/github", "_self" );
     };
 
     return (
-        <div className="register-form">
+        <div className="auth-form-container">
             {error && (
                 <div className="alert alert-error">
                     <i className="fas fa-exclamation-circle"></i>
@@ -119,18 +80,17 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess }) => {
                 </div>
             )}
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="auth-form">
                 <div className="form-group">
                     <label htmlFor="register-username">Benutzername</label>
                     <input
                         type="text"
                         id="register-username"
-                        className="form-control"
-                        placeholder="Wählen Sie einen Benutzernamen"
                         value={formData.username}
                         onChange={(e) => setFormData({...formData, username: e.target.value})}
                         required
                         disabled={isLoading}
+                        placeholder="Wählen Sie einen Benutzernamen"
                     />
                 </div>
 
@@ -139,80 +99,58 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess }) => {
                     <input
                         type="email"
                         id="register-email"
-                        className="form-control"
-                        placeholder="Ihre E-Mail-Adresse"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         required
                         disabled={isLoading}
+                        placeholder="Ihre E-Mail-Adresse"
                     />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="register-password">Passwort</label>
-                    <div className="password-input-container">
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            id="register-password"
-                            className="form-control"
-                            placeholder="Erstellen Sie ein sicheres Passwort"
-                            value={formData.password}
-                            onChange={(e) => setFormData({...formData, password: e.target.value})}
-                            required
-                            disabled={isLoading}
-                        />
-                        <button
-                            type="button"
-                            className="password-toggle"
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            <i className={`far fa-${showPassword ? 'eye-slash' : 'eye'}`}></i>
-                        </button>
-                    </div>
+                    <input
+                        type="password"
+                        id="register-password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        required
+                        disabled={isLoading}
+                        placeholder="Mindestens 6 Zeichen"
+                    />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="register-confirm-password">Passwort bestätigen</label>
-                    <div className="password-input-container">
-                        <input
-                            type={showConfirmPassword ? "text" : "password"}
-                            id="register-confirm-password"
-                            className="form-control"
-                            placeholder="Wiederholen Sie Ihr Passwort"
-                            value={formData.confirmPassword}
-                            onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-                            required
-                            disabled={isLoading}
-                        />
-                        <button
-                            type="button"
-                            className="password-toggle"
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        >
-                            <i className={`far fa-${showConfirmPassword ? 'eye-slash' : 'eye'}`}></i>
-                        </button>
-                    </div>
+                    <input
+                        type="password"
+                        id="register-confirm-password"
+                        value={formData.confirmPassword}
+                        onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                        required
+                        disabled={isLoading}
+                        placeholder="Wiederholen Sie Ihr Passwort"
+                    />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="register-role">Rolle</label>
                     <select
                         id="register-role"
-                        className="form-control"
                         value={formData.role}
-                        onChange={(e) => setFormData({...formData, role: e.target.value as UserRole})}
+                        onChange={(e) => setFormData({...formData, role: e.target.value as any})}
                         disabled={isLoading}
                     >
                         <option value="USER">Benutzer</option>
-                        <option value="ADVISOR">Beauftragte</option>
+                        <option value="MODERATOR">Moderator</option>
                         <option value="ADMIN">Administrator</option>
                     </select>
                 </div>
 
                 <button
                     type="submit"
-                    className={`btn btn-primary ${isLoading ? 'loading' : ''}`}
                     disabled={isLoading}
+                    className="btn btn-primary btn-full"
                 >
                     {isLoading ? (
                         <>
@@ -220,32 +158,32 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess }) => {
                             Wird verarbeitet...
                         </>
                     ) : (
-                        'Konto erstellen'
+                        <>
+                            <i className="fas fa-user-plus"></i>
+                            Konto erstellen
+                        </>
                     )}
                 </button>
             </form>
 
-            <div className="divider">
-                <span>oder</span>
+            <div className="oauth-section">
+                <div className="divider">
+                    <span>oder</span>
+                </div>
+
+                <button
+                    onClick={handleGitHubLogin}
+                    className="btn btn-github btn-full"
+                    disabled={isLoading}
+                >
+                    <i className="fab fa-github"></i>
+                    Mit GitHub registrieren
+                </button>
             </div>
 
-            <button
-                className="btn btn-oauth"
-                onClick={handleGitHubRegister}
-                disabled={isLoading}
-            >
-                <i className="fab fa-github"></i>
-                Mit GitHub registrieren
-            </button>
-
-            <div className="form-footer">
-                Bereits ein Konto?{' '}
-                <a href="#" className="switch-link">
-                    Jetzt anmelden
-                </a>
+            <div className="auth-footer">
+                Bereits ein Konto? <Link to="/login">Jetzt anmelden</Link>
             </div>
         </div>
     );
 };
-
-export default RegisterForm;

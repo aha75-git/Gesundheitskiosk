@@ -1,25 +1,19 @@
-// components/LoginForm.tsx
-import React, { useState} from 'react';
-import {type AuthResponse} from "../types/types.ts";
-// import axios from "axios";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../api/AuthContext';
+import './AuthForms.css';
+import type {LoginRequest} from "../types/types.ts";
 
-interface LoginFormProps {
-    onLoginSuccess: (authResponse: AuthResponse) => void;
-}
+export default function LoginForm() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
 
-interface LoginData {
-    email: string;
-    password: string;
-}
-
-const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
-    const [formData, setFormData] = useState<LoginData>({
+    const [formData, setFormData] = useState<LoginRequest>({
         email: '',
         password: ''
     });
-    const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -27,43 +21,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         setIsLoading(true);
 
         try {
-            // Simulate API call
-            // await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // Mock successful login
-            // const mockAuthResponse: AuthResponse = {
-            //     token: 'mock-jwt-token',
-            //     type: 'bearer',
-            //     user: {
-            //         id: '1',
-            //         username: formData.username,
-            //         email: `${formData.username}@example.com`,
-            //         role: UserRole.USER,
-            //         createdAt: new Date().toISOString()
-            //     }
-            // };
-
-            // onLoginSuccess(mockAuthResponse);
-
-            // In a real application, this would be an API call to your backend
-            const response = await fetch('/api/v1/users/login', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(formData)
-            });
-
-            if (!response.ok) {
-                throw new Error('Login failed');
-            }
-            const authResponse: AuthResponse = await response.json();
-            console.log(authResponse);
-
-            //localStorage.removeItem('auth_mode')
-            //localStorage.setItem('token', authResponse.token)
-
-            onLoginSuccess(authResponse);
+            await login(formData);
+            navigate('/dashboard');
         } catch (err) {
-            console.error(err);
+            console.log(err);
             setError('Anmeldung fehlgeschlagen. Bitte überprüfen Sie Ihre Daten.');
         } finally {
             setIsLoading(false);
@@ -71,32 +32,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
     };
 
     const handleGitHubLogin = () => {
-        // In a real application, this would redirect to your backend OAuth endpoint
-        //window.location.href = 'http://localhost:8080/oauth2/authorization/github';
-
+        // window.location.href = 'http://localhost:8080/oauth2/authorization/github';
         const host:string = window.location.host === "localhost:5173" ? "http://localhost:8080" : window.location.origin;
         window.open(host + "/oauth2/authorization/github", "_self" );
     };
 
-    // const loadUser = () => {
-    //     axios.get("/api/v1/auth/me")
-    //         .then(res => {
-    //             onLoginSuccess(res.data);
-    //             // setUser(res.data);
-    //             console.log(res.data);
-    //         })
-    //         .catch(err => {
-    //             // setUser(null);
-    //             console.log(err);
-    //         });
-    // }
-    //
-    // useEffect(() => {
-    //     loadUser();
-    // }, []);
-
     return (
-        <div className="login-form">
+        <div className="auth-form-container">
             {error && (
                 <div className="alert alert-error">
                     <i className="fas fa-exclamation-circle"></i>
@@ -104,56 +46,47 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
                 </div>
             )}
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="auth-form">
                 <div className="form-group">
                     <label htmlFor="login-username">Benutzername oder E-Mail</label>
                     <input
                         type="text"
                         id="login-username"
-                        className="form-control"
-                        placeholder="Ihr Benutzername oder E-Mail"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         required
                         disabled={isLoading}
+                        placeholder="Ihr Benutzername oder E-Mail"
                     />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="login-password">Passwort</label>
-                    <div className="password-input-container">
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            id="login-password"
-                            className="form-control"
-                            placeholder="Ihr Passwort"
-                            value={formData.password}
-                            onChange={(e) => setFormData({...formData, password: e.target.value})}
-                            required
-                            disabled={isLoading}
-                        />
-                        <button
-                            type="button"
-                            className="password-toggle"
-                            onClick={() => setShowPassword(!showPassword)}
-                        >
-                            <i className={`far fa-${showPassword ? 'eye-slash' : 'eye'}`}></i>
-                        </button>
-                    </div>
+                    <input
+                        type="password"
+                        id="login-password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        required
+                        disabled={isLoading}
+                        placeholder="Ihr Passwort"
+                    />
                 </div>
 
                 <div className="form-options">
-                    <div className="remember-me">
-                        <input type="checkbox" id="remember-me" />
-                        <label htmlFor="remember-me">Angemeldet bleiben</label>
-                    </div>
-                    <a href="#" className="forgot-password">Passwort vergessen?</a>
+                    <label className="checkbox">
+                        <input type="checkbox" />
+                        <span>Angemeldet bleiben</span>
+                    </label>
+                    <Link to="/forgot-password" className="forgot-password">
+                        Passwort vergessen?
+                    </Link>
                 </div>
 
                 <button
                     type="submit"
-                    className={`btn btn-primary ${isLoading ? 'loading' : ''}`}
                     disabled={isLoading}
+                    className="btn btn-primary btn-full"
                 >
                     {isLoading ? (
                         <>
@@ -161,32 +94,32 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
                             Wird verarbeitet...
                         </>
                     ) : (
-                        'Anmelden'
+                        <>
+                            <i className="fas fa-sign-in-alt"></i>
+                            Anmelden
+                        </>
                     )}
                 </button>
             </form>
 
-            <div className="divider">
-                <span>oder</span>
+            <div className="oauth-section">
+                <div className="divider">
+                    <span>oder</span>
+                </div>
+
+                <button
+                    onClick={handleGitHubLogin}
+                    className="btn btn-github btn-full"
+                    disabled={isLoading}
+                >
+                    <i className="fab fa-github"></i>
+                    Mit GitHub anmelden
+                </button>
             </div>
 
-            <button
-                className="btn btn-oauth"
-                onClick={handleGitHubLogin}
-                disabled={isLoading}
-            >
-                <i className="fab fa-github"></i>
-                Mit GitHub anmelden
-            </button>
-
-            <div className="form-footer">
-                Noch kein Konto?{' '}
-                <a href="#" className="switch-link">
-                    Jetzt registrieren
-                </a>
+            <div className="auth-footer">
+                Noch kein Konto? <Link to="/register">Jetzt registrieren</Link>
             </div>
         </div>
     );
 };
-
-export default LoginForm;

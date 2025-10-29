@@ -1,0 +1,13 @@
+/* Footer-Stil */
+footer {
+    background-color: #3b3e4e;  /*  var(--primary);  lightsteelblue;   Dunkler Hintergrund */
+    color: white; /* Weiße Schriftfarbe */
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    align-items: center;
+    display: flex; /* Flexbox für zentrierte Ausrichtung */
+    justify-content: center;
+}

@@ -1,0 +1,50 @@
+.oauth-redirect {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.oauth-container {
+    text-align: center;
+    max-width: 500px;
+    padding: 2rem;
+}
+
+.oauth-content h2 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.oauth-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 2rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .oauth-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .oauth-content p {
+        font-size: 1rem;
+    }
+}

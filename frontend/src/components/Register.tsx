@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../api/AuthContext';
-import {type RegisterRequest, UserRole } from '../types/types';
+import {type RegisterRequest, type UserRole} from '../types/types';
 
 const Register: React.FC = () => {
     const { register } = useAuth();
@@ -8,7 +8,7 @@ const Register: React.FC = () => {
         username: '',
         email: '',
         password: '',
-        role: UserRole.USER
+        role: "USER"
     });
     const [error, setError] = useState('');
 
@@ -66,9 +66,9 @@ const Register: React.FC = () => {
                         value={formData.role}
                         onChange={(e) => setFormData({...formData, role: e.target.value as UserRole})}
                     >
-                        <option value={UserRole.USER}>User</option>
-                        <option value={UserRole.ADVISOR}>Beauftragte</option>
-                        <option value={UserRole.ADMIN}>Admin</option>
+                        <option value="USER">User</option>
+                        <option value="ADVISOR">Beauftragte</option>
+                        <option value="ADMIN">Admin</option>
                     </select>
                 </div>
 
