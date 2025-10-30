@@ -34,6 +34,46 @@ export interface RegisterRequest {
 
 export type UserRole = 'USER' | 'ADVISOR' | 'ADMIN';
 
+export interface ProfileRequest {
+    username: string;
+    email: string;
+    personalData: {
+        firstName: string;
+        lastName: string;
+        dateOfBirth: string;
+        gender: string;
+    };
+    medicalInfo: {
+        bloodType: string;
+        allergies: string[];
+        chronicConditions: string[];
+        currentMedications: Medication[];
+        emergencyContact: {
+            name: string;
+            phone: string;
+            relationship: string;
+        };
+    };
+    contactInfo: {
+        phone: string;
+        address: {
+            street: string;
+            city: string;
+            postalCode: string;
+            country: string;
+            houseNumber: string;
+        };
+        allowHouseVisits: boolean;
+    };
+    languages: string[];
+    specialization: string;
+    bio: string;
+    qualification: string;
+}
+
+export interface ProfileResponse {
+    userProfile: UserProfile;
+}
 
 export interface UserProfile {
     personalData: PersonalData;
@@ -84,4 +124,5 @@ export interface Address {
     city: string;
     postalCode: string;
     country: string;
+    houseNumber: string;
 }

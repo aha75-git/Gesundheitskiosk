@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../api/AuthContext';
+import { useAuth } from '../../api/AuthContext.tsx';
 import './AuthForms.css';
-import type {LoginRequest} from "../types/types.ts";
+import type {LoginRequest} from "../../types/types.ts";
 
 export default function LoginForm() {
     const { login } = useAuth();

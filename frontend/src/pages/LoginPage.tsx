@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../api/AuthContext';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/forms/LoginForm.tsx';
 import './AuthPages.css';
 
 export default function LoginPage() {

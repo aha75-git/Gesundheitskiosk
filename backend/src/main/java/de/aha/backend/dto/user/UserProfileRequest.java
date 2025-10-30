@@ -1,13 +1,22 @@
-package de.aha.backend.model;
+package de.aha.backend.dto.user;
 
+import de.aha.backend.model.ContactInfo;
+import de.aha.backend.model.MedicalInfo;
+import de.aha.backend.model.PersonalData;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
+/**
+ * DTO for user profile request.
+ * Contains user profile fields.
+ */
 @Data
 @Builder
-public class UserProfile {
+public class UserProfileRequest {
+    private String username;
+    private String email;
     private PersonalData personalData;
     private MedicalInfo medicalInfo;
     private ContactInfo contactInfo;
@@ -16,5 +25,4 @@ public class UserProfile {
     private String bio;
     private String qualification;
     private Double rating;
-    private Integer reviewCount;
 }

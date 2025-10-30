@@ -4,11 +4,13 @@ import de.aha.backend.exception.NotFoundObjectException;
 import de.aha.backend.model.User;
 import de.aha.backend.repository.UserRepository;
 import de.aha.backend.security.TokenInteract;
+import de.aha.backend.security.UserDetailsImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -38,7 +40,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         User user = userRepository.findById(oAuth2User.getName())
                 .orElseThrow(() -> new NotFoundObjectException("User not found"));
 
-        var token = tokenInteract.generateToken(user);
+        var token = tokenInteract.generateToken(UserDetailsImpl.builder()
+                .email(user.getId())
+                .password(user.getPassword())
+                .build());
         String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:5173/oauth2/redirect")
                 .queryParam("token", token)
                 .queryParam("username", user.getUsername())

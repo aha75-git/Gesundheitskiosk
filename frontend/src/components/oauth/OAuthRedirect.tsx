@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../api/AuthContext';
+import { useAuth } from '../../api/AuthContext.tsx';
 import './OAuthRedirect.css';
 import {useEffect} from "react";
 

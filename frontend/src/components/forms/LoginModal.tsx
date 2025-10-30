@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../api/AuthContext';
+import { useAuth } from '../../api/AuthContext.tsx';
 import './LoginModal.css';
 
 interface LoginModalProps {

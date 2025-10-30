@@ -6,6 +6,7 @@ import de.aha.backend.dto.user.UserResponse;
 import de.aha.backend.model.User;
 import de.aha.backend.repository.UserRepository;
 import de.aha.backend.security.TokenInteract;
+import de.aha.backend.security.UserDetailsImpl;
 import de.aha.backend.util.PasswordUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +70,7 @@ class UserServiceTest {
         when(repository.findByEmailIgnoreCase("test@example.com")).thenReturn(Optional.of(user));
         try (MockedStatic<PasswordUtil> passwordUtil = mockStatic(PasswordUtil.class)) {
             passwordUtil.when(() -> PasswordUtil.matches("password", "hashedPassword")).thenReturn(true);
-            when(tokenInteract.generateToken(any(User.class))).thenReturn("token");
+            when(tokenInteract.generateToken(any(UserDetailsImpl.class))).thenReturn("token");
 
             UserLoginResponse result = userService.getToken(loginRequest);
 
@@ -77,7 +78,7 @@ class UserServiceTest {
             verify(repository).getOrThrow("1");
             verify(repository, atLeastOnce()).findByEmailIgnoreCase("test@example.com");
             passwordUtil.verify(() -> PasswordUtil.matches("password", "hashedPassword"));
-            verify(tokenInteract).generateToken(any(User.class));
+            verify(tokenInteract).generateToken(any(UserDetailsImpl.class));
         }
     }
 
@@ -87,7 +88,7 @@ class UserServiceTest {
         when(repository.getOrThrow("1")).thenReturn(user);
         try (MockedStatic<PasswordUtil> passwordUtil = mockStatic(PasswordUtil.class)) {
             passwordUtil.when(() -> PasswordUtil.matches("password", "hashedPassword")).thenReturn(true);
-            when(tokenInteract.generateToken(any(User.class))).thenReturn("token");
+            when(tokenInteract.generateToken(any(UserDetailsImpl.class))).thenReturn("token");
 
             UserLoginResponse result = userService.getToken(loginRequest);
 
@@ -95,7 +96,7 @@ class UserServiceTest {
             verify(repository).findByEmailIgnoreCase("test@example.com");
             verify(repository).getOrThrow("1");
             passwordUtil.verify(() -> PasswordUtil.matches("password", "hashedPassword"));
-            verify(tokenInteract).generateToken(any(User.class));
+            verify(tokenInteract).generateToken(any(UserDetailsImpl.class));
         }
     }
 
@@ -114,17 +115,18 @@ class UserServiceTest {
 
     @Test
     void loadUserByUsername_shouldReturnUserDetails() {
-        when(repository.getOrThrow("test@example.com")).thenReturn(user);
+        when(repository.getOrThrow("1")).thenReturn(user);
 
-        User userDetails = new User();
-        userDetails.setEmail(user.getId());
-        userDetails.setPassword(user.getPassword());
+        UserDetailsImpl userDetails = UserDetailsImpl.builder()
+                .email(user.getId())
+                .password(user.getPassword())
+                .build();
 
-        UserDetails loaded = userService.loadUserByUsername("test@example.com");
+        UserDetails loaded = userService.loadUserByUsername("1");
 
-        assertEquals("test@example.com", loaded.getUsername());
+        assertEquals("1", loaded.getUsername());
         assertEquals("hashedPassword", loaded.getPassword());
-        verify(repository).getOrThrow("test@example.com");
+        verify(repository).getOrThrow("1");
     }
 
     @Test

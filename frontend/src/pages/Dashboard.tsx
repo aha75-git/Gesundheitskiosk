@@ -68,7 +68,8 @@ export default function Dashboard() {
                                         <i className="fas fa-calendar-alt"></i>
                                         <span>Meine Termine</span>
                                     </button>
-                                    <button className="action-btn">
+                                    <button className="action-btn"
+                                            onClick={() => navigate('/profile')}>
                                         <i className="fas fa-user-edit"></i>
                                         <span>Profil bearbeiten</span>
                                     </button>

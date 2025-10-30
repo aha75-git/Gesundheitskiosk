@@ -7,6 +7,7 @@ import de.aha.backend.model.User;
 import de.aha.backend.model.UserRole;
 import de.aha.backend.security.AuthInterceptor;
 import de.aha.backend.security.TokenInteract;
+import de.aha.backend.security.UserDetailsImpl;
 import de.aha.backend.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,15 +86,20 @@ class UserControllerTest {
     void login_success() {
         // GIVEN
         User user =  new User();
+        user.setId("user123");
         user.setEmail("test@email.com");
         user.setPassword("password123");
         String token = "secret_token_123"; //tokenInteract.generateToken(loadUserByUsername(user.getId()));
         UserLoginRequest request = new UserLoginRequest("test@email.com", "password123");
         UserResponse userResponse = UserResponse.builder().email("test@email.com").token(token).build();
         UserLoginResponse loginResponse = new UserLoginResponse(token, userResponse);
+        UserDetailsImpl userDetails = UserDetailsImpl.builder()
+                .email(user.getId())
+                .password(user.getPassword())
+                .build();
 
         // WHEN
-        when(tokenInteract.generateToken(user)).thenReturn(token);
+        when(tokenInteract.generateToken(userDetails)).thenReturn(token);
         when(userService.authenticateUser(request)).thenReturn(loginResponse);
         var result = userController.login(request);
 

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../api/AuthContext';
-import LoginModal from './LoginModal';
-import './Navigation.css';
+import { useAuth } from '../../api/AuthContext.tsx';
+import LoginModal from '../forms/LoginModal.tsx';
+import './Header.css';
 
-const Navigation: React.FC = () => {
+const Header: React.FC = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -17,28 +17,13 @@ const Navigation: React.FC = () => {
 
     const handleGitHubLogin = () => {
         // window.location.href = 'http://localhost:8080/oauth2/authorization/github';
-
-        console.log("handleGitHubLogin  =>  ######");
-
         const host:string = window.location.host === "localhost:5173" ? "http://localhost:8080" : window.location.origin;
-        console.log("handleGitHubLogin  =>  host: " + host);
         window.open(host + "/oauth2/authorization/github", "_self" );
     };
 
     const isActiveLink = (path: string) => {
         return location.pathname === path ? 'active' : '';
     };
-
-    // const loadUser = () => {
-    //     axios.get('/api/v1/auth/me')
-    //         .then(response => {
-    //             console.log(response.data)
-    //         })
-    // }
-    //
-    // useEffect(() => {
-    //     loadUser();
-    // }, []);
 
     return (
         <>
@@ -95,4 +80,4 @@ const Navigation: React.FC = () => {
     );
 };
 
-export default Navigation;
+export default Header;

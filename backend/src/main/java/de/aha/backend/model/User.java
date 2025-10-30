@@ -20,7 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Document(collection = "users")
-public class User extends AbstractDocument implements UserDetails {
+public class User extends AbstractDocument {
 
     /**
      * User name.
@@ -80,10 +80,10 @@ public class User extends AbstractDocument implements UserDetails {
      */
     private List<Consent> consents;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
-    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
+//    }
 }
 
 

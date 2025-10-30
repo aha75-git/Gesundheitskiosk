@@ -1,10 +1,8 @@
 package de.aha.backend.mapper;
 
-import de.aha.backend.dto.user.RegisterRequest;
-import de.aha.backend.dto.user.UserCreateRequest;
-import de.aha.backend.dto.user.UserLoginResponse;
-import de.aha.backend.dto.user.UserResponse;
+import de.aha.backend.dto.user.*;
 import de.aha.backend.model.User;
+import de.aha.backend.model.UserProfile;
 import de.aha.backend.model.UserRole;
 import de.aha.backend.util.PasswordUtil;
 
@@ -42,5 +40,23 @@ public class UserMapper {
 
     public static UserLoginResponse mapToLoginResponse(UserResponse user, String token) {
         return new UserLoginResponse(token, user);
+    }
+
+    public static UserProfile mapToUserProfile(UserProfileRequest request) {
+        return UserProfile.builder()
+                .personalData(request.getPersonalData())
+                .medicalInfo(request.getMedicalInfo())
+                .contactInfo(request.getContactInfo())
+                .languages(request.getLanguages())
+                .specialization(request.getSpecialization())
+                .bio(request.getBio())
+                .qualification(request.getQualification())
+                .rating(request.getRating())
+                .reviewCount(0)
+                .build();
+    }
+
+    public static UserProfileResponse mapToUserProfileResponse(UserProfile userProfile) {
+        return new UserProfileResponse(userProfile);
     }
 }

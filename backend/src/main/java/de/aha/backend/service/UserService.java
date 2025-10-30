@@ -7,6 +7,7 @@ import de.aha.backend.model.User;
 import de.aha.backend.model.UserRole;
 import de.aha.backend.repository.UserRepository;
 import de.aha.backend.security.TokenInteract;
+import de.aha.backend.security.UserDetailsImpl;
 import de.aha.backend.util.PasswordUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -98,15 +99,13 @@ public class UserService implements UserDetailsService {
         //UserResponse response = mapper.toResponse(user);
         //return mapper.toLoginResponse(response, tokenInteract.generateToken(loadUserByUsername(user.getId())));
 
-        // TODO soll die Methode "loadUserByUsername(user.getId())" noch einmal aufgerufen werden?
-        //  User haben wir bereits.
-        // Es handelt sich um UserDetails. Der Methodenname soll heißen "loadUserDetailsById()"
         var token = tokenInteract.generateToken(loadUserByUsername(user.getId()));
         var userResponse = mapToResponse(user);
 
         // Cache user session
         //cacheUserSession(token, user);
 
+        log.info("User authenticated token: {}", token);
         log.info("User authenticated successfully: {}", user.getId());
 
         return new UserLoginResponse(token, userResponse);
@@ -121,7 +120,12 @@ public class UserService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        return userRepository.getOrThrow(userId);
+        User user = userRepository.getOrThrow(userId);
+
+        return UserDetailsImpl.builder()
+                .email(user.getId())
+                .password(user.getPassword())
+                .build();
     }
 
     /**
@@ -210,6 +214,38 @@ public class UserService implements UserDetailsService {
     public Boolean validateToken(HttpServletRequest request) {
         String token = tokenInteract.getToken(request);
         return tokenInteract.validateToken(token);
+    }
+
+    /**
+     * Updates the user profile of an existing user.
+     *
+     * @param userId  ID of the user to update
+     * @param request request containing user profile data
+     * @return response containing updated user profile details
+     */
+    public UserProfileResponse saveProfile(String userId, @Valid UserProfileRequest request) {
+        System.out.println();
+        System.out.println("02 Saving profile for user: " + userId);
+        System.out.println();
+        User user = userRepository.getOrThrow(userId);
+        user.setProfile(mapToUserProfile(request));
+        if(user.getRole() == UserRole.ADMIN) {
+            user.setEmail(request.getEmail());
+            user.setUsername(request.getUsername());
+        }
+        userRepository.save(user);
+        return mapToUserProfileResponse(user.getProfile());
+    }
+
+    /**
+     * Get the user profile of an existing user.
+     *
+     * @param userId  ID of the user to update
+     * @return response containing user profile details
+     */
+    public UserProfileResponse findProfile(String userId) {
+        User user = userRepository.getOrThrow(userId);
+        return mapToUserProfileResponse(user.getProfile());
     }
 
 
