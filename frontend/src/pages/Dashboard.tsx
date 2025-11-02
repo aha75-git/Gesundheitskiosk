@@ -64,7 +64,8 @@ export default function Dashboard() {
                                         <i className="fas fa-search"></i>
                                         <span>Berater suchen</span>
                                     </button>
-                                    <button className="action-btn">
+                                    <button className="action-btn"
+                                            onClick={() => navigate('/appointments')}>
                                         <i className="fas fa-calendar-alt"></i>
                                         <span>Meine Termine</span>
                                     </button>

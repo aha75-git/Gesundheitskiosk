@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../api/AuthContext.tsx';
-import {type RegisterRequest, type UserRole} from '../../types/types.ts';
+import {type RegisterRequest, type UserRole} from '../../types/user/UserTypes.ts';
 
 const Register: React.FC = () => {
     const { register } = useAuth();

@@ -1,9 +1,9 @@
 package de.aha.backend.mapper;
 
 import de.aha.backend.dto.user.*;
-import de.aha.backend.model.User;
-import de.aha.backend.model.UserProfile;
-import de.aha.backend.model.UserRole;
+import de.aha.backend.model.user.User;
+import de.aha.backend.model.user.UserProfile;
+import de.aha.backend.model.user.UserRole;
 import de.aha.backend.util.PasswordUtil;
 
 public class UserMapper {

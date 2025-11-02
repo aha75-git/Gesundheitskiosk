@@ -47,20 +47,61 @@ public class UserController {
         return ResponseEntity.ok(service.find(authInterceptor.getUserId()));
     }
 
-
+    /**
+     * Create a user.
+     * Returns a 201 CREATED if a user created successful.
+     * Returns a 401 Unauthorized response if the user is not authenticated.
+     * Returns a 500 Internal Server Error response if an unexpected error occurs.
+     * Returns a 503 Service Unavailable response if the service is temporarily unavailable.
+     */
     @PostMapping("/create")
+    @Operation(summary = "Create a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User created"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+            @ApiResponse(responseCode = "503", description = "Service unavailable"),
+    })
     public ResponseEntity<Void> create(@Valid @RequestBody UserCreateRequest request) {
         service.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    /**
+     * Register a user.
+     * Returns a 200 OK response with user details if successful.
+     * Returns a 401 Unauthorized response if the user is not authenticated.
+     * Returns a 500 Internal Server Error response if an unexpected error occurs.
+     * Returns a 503 Service Unavailable response if the service is temporarily unavailable.
+     */
     @PostMapping("/register")
+    @Operation(summary = "Register a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User registered"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+            @ApiResponse(responseCode = "503", description = "Service unavailable"),
+    })
     public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody RegisterRequest request) {
         var response = service.registerUser(request);
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * User login.
+     * Returns a 200 OK response with user details if successful.
+     * Returns a 401 Unauthorized response if the user is not authenticated.
+     * Returns a 500 Internal Server Error response if an unexpected error occurs.
+     * Returns a 503 Service Unavailable response if the service is temporarily unavailable.
+     */
     @PostMapping("/login")
+    @Operation(summary = "User login")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User logged in"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "500", description = "Internal server error"),
+            @ApiResponse(responseCode = "503", description = "Service unavailable"),
+    })
     public ResponseEntity<UserLoginResponse> login(@Valid @RequestBody UserLoginRequest request) {
         UserLoginResponse response = service.authenticateUser(request);
         return ResponseEntity.ok(response);

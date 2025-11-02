@@ -1,8 +1,7 @@
-package de.aha.backend.model;
+package de.aha.backend.model.user;
 
 import org.junit.jupiter.api.Test;
 
-import javax.management.Notification;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;

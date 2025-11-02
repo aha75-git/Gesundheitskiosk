@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type {ProfileRequest, ProfileResponse} from "../types/types.ts";
+import type {ProfileRequest, ProfileResponse} from "../types/user/UserTypes.ts";
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';
 

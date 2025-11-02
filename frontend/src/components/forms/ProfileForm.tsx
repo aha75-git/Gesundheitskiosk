@@ -8,7 +8,7 @@ import type {
     Address,
     EmergencyContact,
     Medication, User
-} from '../../types/types.ts';
+} from '../../types/user/UserTypes.ts';
 import './ProfileForm.css';
 
 interface ProfileFormProps {

@@ -1,10 +1,13 @@
-package de.aha.backend.model;
+package de.aha.backend.model.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class Medication {
     private String name;
     private String dosage;

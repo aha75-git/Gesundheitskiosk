@@ -1,4 +1,4 @@
-package de.aha.backend.model;
+package de.aha.backend.model.user;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package de.aha.backend.dto.user;
 
-import de.aha.backend.model.ContactInfo;
-import de.aha.backend.model.MedicalInfo;
-import de.aha.backend.model.PersonalData;
+import de.aha.backend.model.user.ContactInfo;
+import de.aha.backend.model.user.MedicalInfo;
+import de.aha.backend.model.user.PersonalData;
 import lombok.Builder;
 import lombok.Data;
 

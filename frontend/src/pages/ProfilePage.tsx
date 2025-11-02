@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../api/AuthContext';
 import { profileService } from '../services/profileService';
-import type {UserProfile, ProfileRequest, ProfileResponse} from '../types/types.ts';
+import type {UserProfile, ProfileRequest, ProfileResponse} from '../types/user/UserTypes.ts';
 import ProfileForm from '../components/forms/ProfileForm';
 import './ProfilePage.css';
 

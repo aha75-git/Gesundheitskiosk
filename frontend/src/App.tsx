@@ -11,6 +11,7 @@ import AppointmentBooking from './pages/AppointmentBooking';
 import OAuthRedirect from './components/oauth/OAuthRedirect.tsx';
 import './App.css';
 import ProfilePage from "./pages/ProfilePage.tsx";
+import MyAppointmentsPage from "./pages/MyAppointmentsPage.tsx";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/search" element={<AdvisorSearch />} />
                         <Route path="/appointment/:advisorId" element={<AppointmentBooking />} />
+                        <Route path="/appointments" element={<MyAppointmentsPage />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/oauth2/redirect" element={<OAuthRedirect />} />

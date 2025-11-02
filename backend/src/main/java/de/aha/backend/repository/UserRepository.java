@@ -1,8 +1,7 @@
 package de.aha.backend.repository;
 
-import de.aha.backend.model.User;
-import de.aha.backend.model.UserRole;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import de.aha.backend.model.user.User;
+import de.aha.backend.model.user.UserRole;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package de.aha.backend.model;
+package de.aha.backend.model.user;
 
 import org.junit.jupiter.api.Test;
 

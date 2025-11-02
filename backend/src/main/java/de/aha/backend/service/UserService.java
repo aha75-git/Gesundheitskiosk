@@ -3,8 +3,8 @@ package de.aha.backend.service;
 import de.aha.backend.dto.user.*;
 import de.aha.backend.exception.AppAuthenticationException;
 import de.aha.backend.exception.ExecutionConflictException;
-import de.aha.backend.model.User;
-import de.aha.backend.model.UserRole;
+import de.aha.backend.model.user.User;
+import de.aha.backend.model.user.UserRole;
 import de.aha.backend.repository.UserRepository;
 import de.aha.backend.security.TokenInteract;
 import de.aha.backend.security.UserDetailsImpl;
@@ -224,9 +224,6 @@ public class UserService implements UserDetailsService {
      * @return response containing updated user profile details
      */
     public UserProfileResponse saveProfile(String userId, @Valid UserProfileRequest request) {
-        System.out.println();
-        System.out.println("02 Saving profile for user: " + userId);
-        System.out.println();
         User user = userRepository.getOrThrow(userId);
         user.setProfile(mapToUserProfile(request));
         if(user.getRole() == UserRole.ADMIN) {
@@ -246,6 +243,18 @@ public class UserService implements UserDetailsService {
     public UserProfileResponse findProfile(String userId) {
         User user = userRepository.getOrThrow(userId);
         return mapToUserProfileResponse(user.getProfile());
+    }
+
+    // TODO
+    public boolean isPatient() {
+        // Implementation to check if current user is a patient
+        return true; // Simplified
+    }
+
+    // TODO
+    public boolean isAdvisor() {
+        // Implementation to check if current user is an advisor
+        return false; // Simplified
     }
 
 

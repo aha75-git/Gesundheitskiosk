@@ -1,13 +1,11 @@
 package de.aha.backend.dto.user;
 
-import de.aha.backend.model.UserRole;
+import de.aha.backend.model.user.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * DTO for register a new user.
