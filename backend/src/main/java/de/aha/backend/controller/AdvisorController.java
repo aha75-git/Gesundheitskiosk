@@ -1,9 +1,10 @@
 package de.aha.backend.controller;
 
-import de.aha.backend.model.appointment.Advisor;
+import de.aha.backend.model.advisor.Advisor;
 import de.aha.backend.security.AuthInterceptor;
 import de.aha.backend.security.AuthRequired;
 import de.aha.backend.service.AdvisorService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class AdvisorController {
     private final AdvisorService advisorService;
 
     @GetMapping
+    @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<List<Advisor>> getAllAdvisors(
             @RequestParam(required = false) String specialization,
             @RequestParam(required = false) String language) {
@@ -29,6 +31,7 @@ public class AdvisorController {
     }
 
     @GetMapping("/{advisorId}")
+    @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<Advisor> getAdvisorById(@PathVariable String advisorId) {
         Optional<Advisor> advisor = advisorService.getAdvisorById(advisorId);
         return advisor.map(ResponseEntity::ok)

@@ -1,9 +1,9 @@
 import axios from 'axios';
 import type {
     AppointmentResponse,
-    CreateAppointmentRequest,
     UpdateAppointmentStatusRequest,
-    AvailabilityResponse
+    AdvisorAvailabilityResponse,
+    AppointmentBookingData
 } from '../types/appointment/AppointmentTypes.ts';
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';
@@ -35,7 +35,7 @@ export const appointmentService = {
     },
 
     // Neuen Termin erstellen
-    createAppointment: async (request: CreateAppointmentRequest): Promise<AppointmentResponse> => {
+    createAppointment: async (request: AppointmentBookingData): Promise<AppointmentResponse> => {
         const response = await api.post('/appointments', request);
         return response.data;
     },
@@ -50,7 +50,7 @@ export const appointmentService = {
     },
 
     // Verfügbarkeit prüfen
-    checkAvailability: async (advisorId: string, date: string): Promise<AvailabilityResponse> => {
+    getAdvisorAvailability: async (advisorId: string, date: string): Promise<AdvisorAvailabilityResponse> => {
         const response = await api.get(`/appointments/availability/${advisorId}`, {
             params: { date }
         });
@@ -60,5 +60,51 @@ export const appointmentService = {
     // Termin löschen
     cancelAppointment: async (appointmentId: string): Promise<void> => {
         await api.delete(`/appointments/${appointmentId}`);
-    }
+    },
+
+    // Terminvorlagen für verschiedene Typen
+    getAppointmentTypes: () => [
+        {
+            type: 'VIDEO_CALL' as const,
+            name: 'Video-Call',
+            description: 'Online-Beratung per Video',
+            duration: 60,
+            icon: 'fas fa-video'
+        },
+        {
+            type: 'PHONE_CALL' as const,
+            name: 'Telefonat',
+            description: 'Beratung per Telefon',
+            duration: 30,
+            icon: 'fas fa-phone'
+        },
+        {
+            type: 'IN_PERSON' as const,
+            name: 'Persönlicher Termin',
+            description: 'Treffen vor Ort',
+            duration: 60,
+            icon: 'fas fa-user'
+        },
+        {
+            type: 'CHAT' as const,
+            name: 'Chat-Beratung',
+            description: 'Schriftliche Beratung',
+            duration: 45,
+            icon: 'fas fa-comments'
+        }
+    ],
+
+    // Symptome-Vorschläge
+    getCommonSymptoms: () => [
+        'Stress und Burnout',
+        'Angstzustände',
+        'Depressive Verstimmungen',
+        'Beziehungsprobleme',
+        'Berufliche Orientierung',
+        'Familienkonflikte',
+        'Selbstwertprobleme',
+        'Schlafstörungen',
+        'Konzentrationsschwierigkeiten',
+        'Lebenskrisen'
+    ]
 };

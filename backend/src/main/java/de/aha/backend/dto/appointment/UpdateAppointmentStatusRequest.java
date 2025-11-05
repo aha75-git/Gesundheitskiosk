@@ -1,7 +1,6 @@
 package de.aha.backend.dto.appointment;
 
 import de.aha.backend.model.appointment.AppointmentStatus;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 @Builder

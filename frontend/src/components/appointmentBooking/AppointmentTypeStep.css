@@ -1,0 +1,178 @@
+.appointment-type-step {
+    padding: 1rem 0;
+}
+
+.step-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.step-header h2 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
+}
+
+.step-header p {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.appointment-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.type-card {
+    display: flex;
+    align-items: flex-start;
+    padding: 1.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    background: white;
+}
+
+.type-card:hover {
+    border-color: #4361ee;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.type-card.selected {
+    border-color: #4361ee;
+    background-color: #f8f9ff;
+}
+
+.type-icon {
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.type-icon i {
+    font-size: 2rem;
+    color: #4361ee;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #4361ee, #3a56d4);
+    border-radius: 50%;
+    color: white;
+}
+
+.type-content {
+    flex: 1;
+}
+
+.type-content h3 {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.type-content p {
+    margin: 0 0 1rem 0;
+    color: #6c757d;
+    line-height: 1.5;
+}
+
+.type-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.duration {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4361ee;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.selection-indicator {
+    margin-left: 1rem;
+    flex-shrink: 0;
+}
+
+.radio-indicator {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #dee2e6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.type-card.selected .radio-indicator {
+    border-color: #4361ee;
+    background-color: #4361ee;
+}
+
+.radio-dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.type-help {
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.help-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.help-card i {
+    color: #1976d2;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.help-card h4 {
+    margin: 0 0 0.5rem 0;
+    color: #1976d2;
+}
+
+.help-card p {
+    margin: 0;
+    color: #546e7a;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .appointment-types-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .type-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .type-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    .selection-indicator {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+}

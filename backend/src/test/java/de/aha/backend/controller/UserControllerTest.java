@@ -1,6 +1,5 @@
 package de.aha.backend.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.aha.backend.dto.user.*;
 import de.aha.backend.exception.AppAuthenticationException;
 import de.aha.backend.exception.ExecutionConflictException;
@@ -167,7 +166,7 @@ class UserControllerTest {
 
 
     @Test
-    public void testGetProfile() throws Exception {
+    public void testGetProfile() {
         // GIVEN
         UserProfileResponse expectedResponse = UserProfileResponse.builder()
                 .userProfile(UserProfile.builder()
@@ -196,7 +195,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void testSaveProfile() throws Exception {
+    public void testSaveProfile() {
         // GIVEN
         UserProfileRequest request = UserProfileRequest.builder()
                 .username("testuser")

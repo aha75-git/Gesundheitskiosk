@@ -6,12 +6,13 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import Dashboard from './pages/Dashboard';
-import AdvisorSearch from './pages/AdvisorSearch';
+// import AdvisorSearch from './pages/AdvisorSearch';
 import AppointmentBooking from './pages/AppointmentBooking';
 import OAuthRedirect from './components/oauth/OAuthRedirect.tsx';
 import './App.css';
 import ProfilePage from "./pages/ProfilePage.tsx";
 import MyAppointmentsPage from "./pages/MyAppointmentsPage.tsx";
+import AdvisorSearchPage from "./pages/AdvisorSearchPage.tsx";
 
 function App() {
     return (
@@ -22,7 +23,7 @@ function App() {
                         <Route path="/" element={<HomePage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
-                        <Route path="/search" element={<AdvisorSearch />} />
+                        <Route path="/search" element={<AdvisorSearchPage />} />
                         <Route path="/appointment/:advisorId" element={<AppointmentBooking />} />
                         <Route path="/appointments" element={<MyAppointmentsPage />} />
                         <Route path="/dashboard" element={<Dashboard />} />

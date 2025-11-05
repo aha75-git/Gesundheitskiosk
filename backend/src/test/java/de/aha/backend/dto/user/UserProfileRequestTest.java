@@ -2,7 +2,6 @@ package de.aha.backend.dto.user;
 
 import de.aha.backend.model.user.Address;
 import de.aha.backend.model.user.ContactInfo;
-import de.aha.backend.model.user.UserRole;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

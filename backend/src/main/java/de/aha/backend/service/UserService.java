@@ -166,6 +166,14 @@ public class UserService implements UserDetailsService {
     }
 
     /**
+     * Finds a user by id or throws NotFoundObjectException if not found.
+     * @param userId User ID
+     * @return User entity
+     */
+    public User findById(String userId) {
+        return userRepository.getOrThrow(userId);
+    }
+    /**
      * Checks if the email is unique in the database.
      * Throws ExecutionConflictException if a user with the email already exists.
      *
@@ -174,6 +182,7 @@ public class UserService implements UserDetailsService {
     private void checkUniqueEmail(String email) {
         userRepository.findByEmailIgnoreCase(email)
                 .ifPresent(u -> {
+                    log.info("User with ID: '{}' and with email '{}' already exists", u.getId(), email);
                     throw new ExecutionConflictException(
                             "User with email '" + email + "' already exists");
                 });

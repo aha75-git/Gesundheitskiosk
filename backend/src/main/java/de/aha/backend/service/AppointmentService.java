@@ -5,10 +5,11 @@ import de.aha.backend.dto.appointment.AvailabilityResponse;
 import de.aha.backend.dto.appointment.CreateAppointmentRequest;
 import de.aha.backend.dto.appointment.UpdateAppointmentStatusRequest;
 import de.aha.backend.mapper.AppointmentMapper;
-import de.aha.backend.model.appointment.Advisor;
+import de.aha.backend.model.advisor.Advisor;
 import de.aha.backend.model.appointment.Appointment;
 import de.aha.backend.model.appointment.AppointmentStatus;
 import de.aha.backend.model.appointment.TimeSlot;
+import de.aha.backend.model.appointment.WorkingHours;
 import de.aha.backend.repository.AdvisorRepository;
 import de.aha.backend.repository.AppointmentRepository;
 import de.aha.backend.repository.UserRepository;
@@ -207,7 +208,7 @@ public class AppointmentService {
 
         // Get advisor's working hours for the specific day
         DayOfWeek dayOfWeek = date.getDayOfWeek();
-        Optional<Advisor.WorkingHours> workingHoursOpt = advisor.getWorkingHours().stream()
+        var workingHoursOpt = advisor.getWorkingHours().stream()
                 .filter(wh -> wh.getDayOfWeek().name().equals(dayOfWeek.name()))
                 .findFirst();
 
@@ -215,7 +216,7 @@ public class AppointmentService {
             return availableSlots; // No working hours for this day
         }
 
-        Advisor.WorkingHours workingHours = workingHoursOpt.get();
+        WorkingHours workingHours = workingHoursOpt.get();
         LocalTime startTime = LocalTime.parse(workingHours.getStartTime());
         LocalTime endTime = LocalTime.parse(workingHours.getEndTime());
 
@@ -242,7 +243,11 @@ public class AppointmentService {
                     });
 
             if (isAvailable) {
-                availableSlots.add(new TimeSlot(currentSlotStart, currentSlotEnd));
+                availableSlots.add(TimeSlot.builder()
+                                .start(currentSlotStart)
+                                .end(currentSlotEnd)
+                                .available(true)
+                        .build());
             }
 
             currentSlotStart = currentSlotStart.plusMinutes(DEFAULT_APPOINTMENT_DURATION);

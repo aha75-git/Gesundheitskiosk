@@ -1,9 +1,7 @@
 package de.aha.backend.dto.appointment;
 
-import de.aha.backend.model.appointment.Appointment;
 import de.aha.backend.model.appointment.AppointmentType;
 import de.aha.backend.model.appointment.Priority;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

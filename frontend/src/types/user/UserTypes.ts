@@ -6,15 +6,6 @@ export interface User {
     createdAt: string;
 }
 
-export interface Advisor {
-    id: string;
-    name: string;
-    specialization: string;
-    rating: number;
-    languages: string[];
-    image?: string;
-}
-
 export interface AuthResponse {
     token: string;
     type: string;

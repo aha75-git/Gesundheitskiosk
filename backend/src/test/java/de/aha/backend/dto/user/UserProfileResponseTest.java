@@ -3,10 +3,7 @@ package de.aha.backend.dto.user;
 import de.aha.backend.model.user.Address;
 import de.aha.backend.model.user.ContactInfo;
 import de.aha.backend.model.user.UserProfile;
-import jakarta.validation.ConstraintViolation;
 import org.junit.jupiter.api.Test;
-
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
