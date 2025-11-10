@@ -3,10 +3,10 @@ package de.aha.backend.controller;
 import de.aha.backend.dto.user.*;
 import de.aha.backend.exception.AppAuthenticationException;
 import de.aha.backend.exception.ExecutionConflictException;
-import de.aha.backend.model.User;
-import de.aha.backend.model.UserRole;
+import de.aha.backend.model.user.*;
 import de.aha.backend.security.AuthInterceptor;
 import de.aha.backend.security.TokenInteract;
+import de.aha.backend.security.UserDetailsImpl;
 import de.aha.backend.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,15 +85,20 @@ class UserControllerTest {
     void login_success() {
         // GIVEN
         User user =  new User();
+        user.setId("user123");
         user.setEmail("test@email.com");
         user.setPassword("password123");
         String token = "secret_token_123"; //tokenInteract.generateToken(loadUserByUsername(user.getId()));
         UserLoginRequest request = new UserLoginRequest("test@email.com", "password123");
         UserResponse userResponse = UserResponse.builder().email("test@email.com").token(token).build();
         UserLoginResponse loginResponse = new UserLoginResponse(token, userResponse);
+        UserDetailsImpl userDetails = UserDetailsImpl.builder()
+                .email(user.getId())
+                .password(user.getPassword())
+                .build();
 
         // WHEN
-        when(tokenInteract.generateToken(user)).thenReturn(token);
+        when(tokenInteract.generateToken(userDetails)).thenReturn(token);
         when(userService.authenticateUser(request)).thenReturn(loginResponse);
         var result = userController.login(request);
 
@@ -119,14 +124,14 @@ class UserControllerTest {
         // GIVEN
         RegisterRequest request = new RegisterRequest("testmax","test@email.com", "password123", UserRole.USER);
         UserResponse userResponse = UserResponse.builder().email("test@email.com").build();
-
+        UserLoginResponse userLoginResponse = new UserLoginResponse("password123", userResponse);
         // WHEN
-        when(userService.registerUser(request)).thenReturn(userResponse);
+        when(userService.registerUser(request)).thenReturn(userLoginResponse);
         var result = userController.registerUser(request);
 
         // THEN
         assertEquals(org.springframework.http.HttpStatus.OK, result.getStatusCode());
-        assertEquals(userResponse, result.getBody());
+        assertEquals(userLoginResponse, result.getBody());
     }
 
     @Test
@@ -139,5 +144,98 @@ class UserControllerTest {
 
         // THEN
         assertThrows(ExecutionConflictException.class, () -> userController.registerUser(request));
+    }
+
+//    @Test
+//    void getProfile_success() {
+//        String userId = "user123";
+//        UserProfile userProfile = UserProfile.builder()
+//                .
+//                .build();
+//
+//        UserProfileResponse response = UserProfileResponse.builder()
+//                .email("test@email.com")
+//                .build();
+//
+//        when(authInterceptor.getUserId()).thenReturn(userId);
+//        when(userService.find(userId)).thenReturn(response);
+//        ResponseEntity<UserResponse> result = userController.find();
+//        assertEquals(org.springframework.http.HttpStatus.OK, result.getStatusCode());
+//        assertEquals(response, result.getBody());
+//    }
+
+
+    @Test
+    public void testGetProfile() {
+        // GIVEN
+        UserProfileResponse expectedResponse = UserProfileResponse.builder()
+                .userProfile(UserProfileDTO.builder()
+                        .contactInfo(ContactInfo.builder()
+                                .phone("123456789")
+                                .allowHouseVisits(true)
+                                .address(Address.builder()
+                                        .city("city")
+                                        .country("country")
+                                        .street("street")
+                                        .houseNumber("4")
+                                        .postalCode("12345")
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+
+        // WHEN
+        when(authInterceptor.getUserId()).thenReturn("1");
+        when(userService.findProfile("1")).thenReturn(expectedResponse);
+
+        // THEN
+        ResponseEntity<UserProfileResponse> result = userController.getProfile();
+        assertEquals(org.springframework.http.HttpStatus.OK, result.getStatusCode());
+        assertEquals(expectedResponse, result.getBody());
+    }
+
+    @Test
+    public void testSaveProfile() {
+        // GIVEN
+        UserProfileRequest request = UserProfileRequest.builder()
+                .username("testuser")
+                .email("test@example.com")
+                .contactInfo(ContactInfo.builder()
+                        .phone("123456789")
+                        .allowHouseVisits(true)
+                        .address(Address.builder()
+                                .city("city")
+                                .country("country")
+                                .street("street")
+                                .houseNumber("4")
+                                .postalCode("12345")
+                                .build())
+                        .build())
+                .build();
+
+        UserProfileResponse expectedResponse = UserProfileResponse.builder()
+                .userProfile(UserProfileDTO.builder()
+                        .contactInfo(ContactInfo.builder()
+                                .phone("123456789")
+                                .allowHouseVisits(true)
+                                .address(Address.builder()
+                                        .city("city")
+                                        .country("country")
+                                        .street("street")
+                                        .houseNumber("4")
+                                        .postalCode("12345")
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+
+        // WHEN
+        when(authInterceptor.getUserId()).thenReturn("1");
+        when(userService.saveProfile("1", request)).thenReturn(expectedResponse);
+
+        // THEN
+        ResponseEntity<UserProfileResponse> result = userController.saveProfile(request);
+        assertEquals(org.springframework.http.HttpStatus.OK, result.getStatusCode());
+        assertEquals(expectedResponse, result.getBody());
     }
 }

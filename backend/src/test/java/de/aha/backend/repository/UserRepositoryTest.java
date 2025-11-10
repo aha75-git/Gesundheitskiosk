@@ -1,7 +1,7 @@
 package de.aha.backend.repository;
 
-import de.aha.backend.model.User;
-import de.aha.backend.model.UserRole;
+import de.aha.backend.model.user.User;
+import de.aha.backend.model.user.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

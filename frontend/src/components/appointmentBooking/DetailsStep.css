@@ -1,0 +1,189 @@
+.details-step {
+    padding: 1rem 0;
+}
+
+.symptoms-section {
+    margin-bottom: 2rem;
+}
+
+.symptoms-section h3 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.symptoms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 0.75rem;
+}
+
+.symptom-card {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.symptom-card:hover {
+    border-color: #4361ee;
+}
+
+.symptom-card.selected {
+    border-color: #4361ee;
+    background-color: #f8f9ff;
+}
+
+.symptom-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.symptom-card.selected .symptom-checkbox {
+    border-color: #4361ee;
+    background-color: #4361ee;
+}
+
+.symptom-checkbox i {
+    color: white;
+    font-size: 0.8rem;
+}
+
+.symptom-text {
+    font-weight: 500;
+    color: #333;
+}
+
+.notes-section {
+    margin-bottom: 2rem;
+}
+
+.notes-section h3 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.notes-textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+.notes-textarea:focus {
+    outline: none;
+    border-color: #4361ee;
+}
+
+.notes-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.notes-hint i {
+    color: #4361ee;
+}
+
+.priority-section h3 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.priority-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.priority-option {
+    display: flex;
+    align-items: flex-start;
+    padding: 1.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.priority-option:hover {
+    border-color: #4361ee;
+}
+
+.priority-option.selected {
+    border-color: #4361ee;
+    background-color: #f8f9ff;
+}
+
+.priority-radio {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #dee2e6;
+    border-radius: 50%;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+}
+
+.priority-option.selected .priority-radio {
+    border-color: #4361ee;
+    background-color: #4361ee;
+}
+
+.radio-dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.priority-content h4 {
+    margin: 0 0 0.25rem 0;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.priority-content p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .symptoms-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .priority-option {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .priority-radio {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+}

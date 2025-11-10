@@ -1,0 +1,220 @@
+/*AdvisorCard.css*/
+.advisor-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.advisor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.advisor-header {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.advisor-image {
+    flex-shrink: 0;
+}
+
+.advisor-image img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+}
+
+.advisor-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+}
+
+.advisor-avatar i {
+    font-size: 2rem;
+    color: white;
+}
+
+.advisor-info {
+    flex: 1;
+}
+
+.advisor-name {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.advisor-specialization {
+    margin: 0 0 1rem 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+}
+
+.advisor-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.stars {
+    display: flex;
+    gap: 2px;
+}
+
+.stars .fa-star {
+    font-size: 0.9rem;
+    color: #ffc107;
+}
+
+.stars .fa-star.half {
+    position: relative;
+}
+
+.stars .fa-star.half::before {
+    content: '\f005';
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+    color: #ffc107;
+}
+
+.stars .fa-star:not(.active):not(.half) {
+    color: #e9ecef;
+}
+
+.rating-value {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.reviews-count {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.advisor-details {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.detail-item i {
+    width: 16px;
+    color: #4361ee;
+    text-align: center;
+}
+
+.advisor-bio {
+    padding: 0 1.5rem;
+    color: #6c757d;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.advisor-availability {
+    padding: 0 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.availability-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.availability-status.available {
+    background: rgba(40, 167, 69, 0.1);
+    color: #155724;
+}
+
+.availability-status.unavailable {
+    background: rgba(220, 53, 69, 0.1);
+    color: #721c24;
+}
+
+.availability-status .fa-circle {
+    font-size: 0.6rem;
+}
+
+.availability-status.available .fa-circle {
+    color: #28a745;
+}
+
+.availability-status.unavailable .fa-circle {
+    color: #dc3545;
+}
+
+.advisor-actions {
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    border-top: 1px solid #e9ecef;
+    background: #f8f9fa;
+}
+
+.advisor-actions .btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.advisor-actions .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+    .advisor-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .advisor-image {
+        align-self: center;
+    }
+
+    .advisor-rating {
+        justify-content: center;
+    }
+
+    .advisor-actions {
+        flex-direction: column;
+    }
+}

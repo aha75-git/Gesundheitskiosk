@@ -1,6 +1,7 @@
 package de.aha.backend.config;
 
 //import com.amazingapps.restaurantfinder.security.JwtAuthenticationFilter;
+import de.aha.backend.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+//    private final CustomOAuth2UserService oauth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
     /**
      * Configures the security filter chain, including JWT authentication and session management.
      * @param http HttpSecurity configuration
@@ -49,8 +53,10 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
                 )
                 // OAuth aktivieren
-                .oauth2Login(o -> o.
-                        defaultSuccessUrl("http://localhost:5173"))
+                .oauth2Login(o -> o
+                                .successHandler(oAuth2AuthenticationSuccessHandler)
+//                        defaultSuccessUrl("http://localhost:5173")
+                )
                 // .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .logout(logout -> logout

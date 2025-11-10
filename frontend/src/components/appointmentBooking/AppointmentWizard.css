@@ -1,0 +1,154 @@
+.appointment-wizard {
+    padding: 2rem;
+}
+
+.wizard-progress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.progress-step {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.step-indicator {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.step-indicator:hover {
+    background-color: #f8f9fa;
+}
+
+.step-indicator.active {
+    background-color: #e3f2fd;
+}
+
+.step-indicator.current {
+    background-color: #bbdefb;
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 1rem;
+    transition: all 0.3s ease;
+}
+
+.step-indicator.active .step-number {
+    background-color: #4361ee;
+    color: white;
+}
+
+.step-indicator.current .step-number {
+    background-color: #3a56d4;
+    color: white;
+    transform: scale(1.1);
+}
+
+.step-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.step-description {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.step-connector {
+    flex: 1;
+    height: 2px;
+    background-color: #e9ecef;
+    margin: 0 1rem;
+    transition: all 0.3s ease;
+}
+
+.step-connector.active {
+    background-color: #4361ee;
+}
+
+.wizard-content {
+    min-height: 400px;
+    margin-bottom: 2rem;
+}
+
+.wizard-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.wizard-navigation .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+}
+
+.wizard-navigation .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .appointment-wizard {
+        padding: 1rem;
+    }
+
+    .wizard-progress {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .progress-step {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .step-connector {
+        display: none;
+    }
+
+    .step-indicator {
+        width: 100%;
+    }
+
+    .wizard-navigation {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .wizard-navigation .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

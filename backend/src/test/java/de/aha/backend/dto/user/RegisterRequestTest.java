@@ -1,6 +1,6 @@
 package de.aha.backend.dto.user;
 
-import de.aha.backend.model.UserRole;
+import de.aha.backend.model.user.UserRole;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

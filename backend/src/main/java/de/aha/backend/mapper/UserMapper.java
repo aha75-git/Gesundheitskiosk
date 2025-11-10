@@ -1,12 +1,13 @@
 package de.aha.backend.mapper;
 
-import de.aha.backend.dto.user.RegisterRequest;
-import de.aha.backend.dto.user.UserCreateRequest;
-import de.aha.backend.dto.user.UserLoginResponse;
-import de.aha.backend.dto.user.UserResponse;
-import de.aha.backend.model.User;
-import de.aha.backend.model.UserRole;
+import de.aha.backend.dto.user.*;
+import de.aha.backend.model.appointment.WorkingHours;
+import de.aha.backend.model.user.*;
 import de.aha.backend.util.PasswordUtil;
+import lombok.Builder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserMapper {
     public static User mapToUser(RegisterRequest request) {
@@ -42,5 +43,35 @@ public class UserMapper {
 
     public static UserLoginResponse mapToLoginResponse(UserResponse user, String token) {
         return new UserLoginResponse(token, user);
+    }
+
+    public static UserProfile mapToUserProfile(UserProfileRequest request) {
+        return UserProfile.builder()
+                .personalData(request.getPersonalData())
+                .medicalInfo(request.getMedicalInfo())
+                .contactInfo(request.getContactInfo())
+                .languages(request.getLanguages())
+                .specialization(request.getSpecialization())
+                .bio(request.getBio())
+                .qualification(request.getQualification())
+                .rating(request.getRating())
+                .reviewCount(0)
+                .build();
+    }
+
+    public static UserProfileResponse mapToUserProfileResponse(UserProfile userProfile, List<WorkingHours> workingHours) {
+        UserProfileDTO userProfileDTO = UserProfileDTO.builder()
+                .workingHours(workingHours)
+                .bio(userProfile.getBio())
+                .qualification(userProfile.getQualification())
+                .specialization(userProfile.getSpecialization())
+                .medicalInfo(userProfile.getMedicalInfo())
+                .contactInfo(userProfile.getContactInfo())
+                .languages(userProfile.getLanguages())
+                .personalData(userProfile.getPersonalData())
+                .rating(userProfile.getRating())
+                .reviewCount(userProfile.getReviewCount())
+                .build();
+        return new UserProfileResponse(userProfileDTO);
     }
 }

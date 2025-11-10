@@ -1,0 +1,13 @@
+/* components/AppointmentTypeSelector.css */
+.appointment-type-selector.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.appointment-type-selector.list-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 400px;
+}

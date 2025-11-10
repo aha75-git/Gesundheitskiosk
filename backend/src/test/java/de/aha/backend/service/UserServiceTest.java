@@ -1,11 +1,14 @@
 package de.aha.backend.service;
 
-import de.aha.backend.dto.user.UserLoginRequest;
-import de.aha.backend.dto.user.UserLoginResponse;
-import de.aha.backend.dto.user.UserResponse;
-import de.aha.backend.model.User;
+import de.aha.backend.dto.user.*;
+import de.aha.backend.model.advisor.Advisor;
+import de.aha.backend.model.user.Address;
+import de.aha.backend.model.user.ContactInfo;
+import de.aha.backend.model.user.User;
+import de.aha.backend.model.user.UserProfile;
 import de.aha.backend.repository.UserRepository;
 import de.aha.backend.security.TokenInteract;
+import de.aha.backend.security.UserDetailsImpl;
 import de.aha.backend.util.PasswordUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +43,9 @@ class UserServiceTest {
     //@Mock
     //private UserMapper mapper;
 
+    @Mock
+    private AdvisorService  advisorService;
+
     @InjectMocks
     private UserService userService;
 
@@ -69,7 +75,7 @@ class UserServiceTest {
         when(repository.findByEmailIgnoreCase("test@example.com")).thenReturn(Optional.of(user));
         try (MockedStatic<PasswordUtil> passwordUtil = mockStatic(PasswordUtil.class)) {
             passwordUtil.when(() -> PasswordUtil.matches("password", "hashedPassword")).thenReturn(true);
-            when(tokenInteract.generateToken(any(User.class))).thenReturn("token");
+            when(tokenInteract.generateToken(any(UserDetailsImpl.class))).thenReturn("token");
 
             UserLoginResponse result = userService.getToken(loginRequest);
 
@@ -77,7 +83,7 @@ class UserServiceTest {
             verify(repository).getOrThrow("1");
             verify(repository, atLeastOnce()).findByEmailIgnoreCase("test@example.com");
             passwordUtil.verify(() -> PasswordUtil.matches("password", "hashedPassword"));
-            verify(tokenInteract).generateToken(any(User.class));
+            verify(tokenInteract).generateToken(any(UserDetailsImpl.class));
         }
     }
 
@@ -87,7 +93,7 @@ class UserServiceTest {
         when(repository.getOrThrow("1")).thenReturn(user);
         try (MockedStatic<PasswordUtil> passwordUtil = mockStatic(PasswordUtil.class)) {
             passwordUtil.when(() -> PasswordUtil.matches("password", "hashedPassword")).thenReturn(true);
-            when(tokenInteract.generateToken(any(User.class))).thenReturn("token");
+            when(tokenInteract.generateToken(any(UserDetailsImpl.class))).thenReturn("token");
 
             UserLoginResponse result = userService.getToken(loginRequest);
 
@@ -95,7 +101,7 @@ class UserServiceTest {
             verify(repository).findByEmailIgnoreCase("test@example.com");
             verify(repository).getOrThrow("1");
             passwordUtil.verify(() -> PasswordUtil.matches("password", "hashedPassword"));
-            verify(tokenInteract).generateToken(any(User.class));
+            verify(tokenInteract).generateToken(any(UserDetailsImpl.class));
         }
     }
 
@@ -114,17 +120,18 @@ class UserServiceTest {
 
     @Test
     void loadUserByUsername_shouldReturnUserDetails() {
-        when(repository.getOrThrow("test@example.com")).thenReturn(user);
+        when(repository.getOrThrow("1")).thenReturn(user);
 
-        User userDetails = new User();
-        userDetails.setEmail(user.getId());
-        userDetails.setPassword(user.getPassword());
+        UserDetailsImpl userDetails = UserDetailsImpl.builder()
+                .email(user.getId())
+                .password(user.getPassword())
+                .build();
 
-        UserDetails loaded = userService.loadUserByUsername("test@example.com");
+        UserDetails loaded = userService.loadUserByUsername("1");
 
-        assertEquals("test@example.com", loaded.getUsername());
+        assertEquals("1", loaded.getUsername());
         assertEquals("hashedPassword", loaded.getPassword());
-        verify(repository).getOrThrow("test@example.com");
+        verify(repository).getOrThrow("1");
     }
 
     @Test
@@ -178,5 +185,72 @@ class UserServiceTest {
         assertFalse(result);
         verify(tokenInteract).getToken(request);
         verify(tokenInteract).validateToken("invalidtoken");
+    }
+
+    @Test
+    public void testFindProfile() {
+        UserProfile expectedProfile = UserProfile.builder()
+                .contactInfo(ContactInfo.builder()
+                        .phone("123456789")
+                        .allowHouseVisits(true)
+                        .address(Address.builder()
+                                .city("city")
+                                .country("country")
+                                .street("street")
+                                .houseNumber("4")
+                                .postalCode("12345")
+                                .build())
+                        .build())
+                .build();
+        user.setProfile(expectedProfile);
+
+        Optional<Advisor> advisorOptional = Optional.ofNullable(Advisor.builder()
+                .bio("Bio").email("email@email.com").build());
+
+        when(repository.getOrThrow("1")).thenReturn(user);
+        when(advisorService.getAdvisorByUserId("1")).thenReturn(advisorOptional);
+
+        UserProfileResponse response = userService.findProfile("1");
+        assertEquals("123456789", response.userProfile().getContactInfo().getPhone());
+    }
+
+    @Test
+    public void testSaveProfile() {
+        UserProfileRequest request = UserProfileRequest.builder()
+                .username("testuser")
+                .email("test@example.com")
+                .contactInfo(ContactInfo.builder()
+                        .phone("123456789")
+                        .allowHouseVisits(true)
+                        .address(Address.builder()
+                                .city("city")
+                                .country("country")
+                                .street("street")
+                                .houseNumber("4")
+                                .postalCode("12345")
+                                .build())
+                        .build())
+                .build();
+
+        UserProfile expectedProfile = UserProfile.builder()
+                .contactInfo(ContactInfo.builder()
+                        .phone("123456789")
+                        .allowHouseVisits(true)
+                        .address(Address.builder()
+                                .city("city")
+                                .country("country")
+                                .street("street")
+                                .houseNumber("4")
+                                .postalCode("12345")
+                                .build())
+                        .build())
+                .build();
+        user.setProfile(expectedProfile);
+
+        when(repository.getOrThrow("1")).thenReturn(user);
+        when(repository.save(any())).thenReturn(user);
+
+        UserProfileResponse response = userService.saveProfile("1", request);
+        assertEquals("123456789", response.userProfile().getContactInfo().getPhone());
     }
 }

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import type {User, LoginRequest, RegisterRequest, AuthResponse} from '../types/types.ts';
+import type {User, LoginRequest, RegisterRequest, AuthResponse} from '../types/user/UserTypes.ts';
 import { authApi } from './api';
 
 interface AuthContextType {
@@ -21,7 +21,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const userData = localStorage.getItem('user');
 
         if (token && userData) {
-            setUser(JSON.parse(userData));
+            try {
+                setUser(JSON.parse(userData));
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+            }
         }
         setIsLoading(false);
     }, []);
