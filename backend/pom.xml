@@ -37,6 +37,7 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <jacoco-plugin.version>0.8.13</jacoco-plugin.version>
         <flapdoodle.version>4.21.0</flapdoodle.version>
+        <spring-email.version>3.1.5</spring-email.version>
     </properties>
     <dependencies>
         <!-- Spring -->
@@ -86,6 +87,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>${spring-email.version}</version>
         </dependency>
 
         <!-- Lombok -->

@@ -1,15 +1,15 @@
 package de.aha.backend.service;
 
-import de.aha.backend.dto.appointment.AppointmentResponse;
-import de.aha.backend.dto.appointment.AvailabilityResponse;
-import de.aha.backend.dto.appointment.CreateAppointmentRequest;
-import de.aha.backend.dto.appointment.UpdateAppointmentStatusRequest;
+import de.aha.backend.dto.appointment.*;
+import de.aha.backend.exception.NotFoundObjectException;
 import de.aha.backend.mapper.AppointmentMapper;
 import de.aha.backend.model.advisor.Advisor;
 import de.aha.backend.model.appointment.Appointment;
 import de.aha.backend.model.appointment.AppointmentStatus;
 import de.aha.backend.model.appointment.TimeSlot;
 import de.aha.backend.model.appointment.WorkingHours;
+import de.aha.backend.model.user.User;
+import de.aha.backend.model.user.UserRole;
 import de.aha.backend.repository.AdvisorRepository;
 import de.aha.backend.repository.AppointmentRepository;
 import de.aha.backend.repository.UserRepository;
@@ -49,11 +49,11 @@ public class AppointmentService {
 
         // Validate advisor exists
         Advisor advisor = advisorRepository.findById(request.advisorId())
-                .orElseThrow(() -> new RuntimeException("Advisor not found with id: " + request.advisorId()));
+                .orElseThrow(() -> new NotFoundObjectException("Advisor not found with id: " + request.advisorId()));
 
         // Check if the requested time slot is available
         if (!isTimeSlotAvailable(request.advisorId(), request.scheduledAt(), DEFAULT_APPOINTMENT_DURATION)) {
-            throw new RuntimeException("Requested time slot is not available");
+            throw new NotFoundObjectException("Requested time slot is not available");
         }
 
         // Create appointment
@@ -79,7 +79,7 @@ public class AppointmentService {
         log.info("Fetching appointment: {} for user: {}", appointmentId, userId);
 
         Appointment appointment = appointmentRepository.findById(appointmentId)
-                .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
+                .orElseThrow(() -> new NotFoundObjectException("Appointment not found with id: " + appointmentId));
 
         // Check if user has access to this appointment
         if (!appointment.getPatientId().equals(userId) && !appointment.getAdvisorId().equals(userId)) {
@@ -87,6 +87,15 @@ public class AppointmentService {
         }
 
         return mapToAppointmentResponse(appointment);
+    }
+
+    public List<AppointmentResponse> getAppointments(LocalDate date, String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundObjectException("User not found with id: " + userId));
+        if (user.getRole() == UserRole.ADVISOR) {
+            return this.getAdvisorAppointments(date, userId);
+        }
+        return this.getUserAppointments(date, userId);
     }
 
     public List<AppointmentResponse> getUserAppointments(LocalDate date, String userId) {
@@ -124,6 +133,32 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
+    public List<AppointmentResponse> getAdvisorAppointments(LocalDate date, String userId) {
+        log.info("Fetching appointments for advisor: {} on date: {}", userId, date);
+
+        Advisor advisor = advisorRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundObjectException("Advisor not found with user id: " + userId));
+
+        List<Appointment> appointments;
+
+        if (date != null) {
+            LocalDateTime startOfDay = date.atStartOfDay();
+            LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+
+            // Get advisor appointments for the user
+            appointments = appointmentRepository
+                    .findByAdvisorIdAndScheduledAtBetweenOrderByScheduledAt(advisor.getId(), startOfDay, endOfDay);
+        } else {
+            // Get all appointments for the advisor
+            appointments = appointmentRepository
+                    .findByAdvisorIdOrderByScheduledAtDesc(advisor.getId());
+        }
+
+        return appointments.stream()
+                .map(AppointmentMapper::mapToAppointmentResponse)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public AppointmentResponse updateAppointmentStatus(String appointmentId, @Valid UpdateAppointmentStatusRequest request, String userId) {
 
@@ -131,7 +166,7 @@ public class AppointmentService {
                 appointmentId, request.status(), userId);
 
         Appointment appointment = appointmentRepository.findById(appointmentId)
-                .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
+                .orElseThrow(() -> new NotFoundObjectException("Appointment not found with id: " + appointmentId));
 
         // Check if user has permission to update status
         if (!appointment.getAdvisorId().equals(userId) && !appointment.getPatientId().equals(userId)) {
@@ -155,14 +190,25 @@ public class AppointmentService {
         log.info("Checking availability for advisor: {} on date: {}", advisorId, date);
 
         Advisor advisor = advisorRepository.findById(advisorId)
-                .orElseThrow(() -> new RuntimeException("Advisor not found with id: " + advisorId));
+                .orElseThrow(() -> new NotFoundObjectException("Advisor not found with id: " + advisorId));
 
-        List<TimeSlot> availableSlots = calculateAvailableSlots(advisor, date);
+        var advisorWorkingHoursOptional = this.getAdvisorWorkingHoursOptional(advisor, date);
+        List<TimeSlot> availableSlots = calculateAvailableSlots(advisor, date, advisorWorkingHoursOptional);
+        var workingHours = advisorWorkingHoursOptional.orElse(
+                WorkingHours.builder()
+                .start("")
+                .end("")
+                .build()
+        );
 
         return AvailabilityResponse.builder()
                 .advisorId(advisorId)
                 .date(date)
                 .availableSlots(availableSlots)
+                .workingHours(WorkingHoursDTO.builder()
+                        .start(workingHours.getStart())
+                        .end(workingHours.getEnd())
+                        .build())
                 .build();
     }
 
@@ -171,7 +217,7 @@ public class AppointmentService {
         log.info("Cancelling appointment: {} by user: {}", appointmentId, userId);
 
         Appointment appointment = appointmentRepository.findById(appointmentId)
-                .orElseThrow(() -> new RuntimeException("Appointment not found with id: " + appointmentId));
+                .orElseThrow(() -> new NotFoundObjectException("Appointment not found with id: " + appointmentId));
 
         // Check if user has permission to cancel
         if (!appointment.getPatientId().equals(userId) && !appointment.getAdvisorId().equals(userId)) {
@@ -203,22 +249,26 @@ public class AppointmentService {
         );
     }
 
-    private List<TimeSlot> calculateAvailableSlots(Advisor advisor, LocalDate date) {
+    private Optional<WorkingHours> getAdvisorWorkingHoursOptional(Advisor advisor, LocalDate date) {
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        return advisor.getWorkingHours().stream()
+                .filter(wh -> wh.getDayOfWeek().name().equals(dayOfWeek.name()))
+                .findFirst();
+    }
+
+    private List<TimeSlot> calculateAvailableSlots(Advisor advisor, LocalDate date, Optional<WorkingHours> advisorWorkingHoursOptional) {
         List<TimeSlot> availableSlots = new ArrayList<>();
 
         // Get advisor's working hours for the specific day
-        DayOfWeek dayOfWeek = date.getDayOfWeek();
-        var workingHoursOpt = advisor.getWorkingHours().stream()
-                .filter(wh -> wh.getDayOfWeek().name().equals(dayOfWeek.name()))
-                .findFirst();
+//        var advisorWorkingHoursOptional = this.getAdvisorWorkingHoursOptional(advisor, date);
 
-        if (workingHoursOpt.isEmpty() || !workingHoursOpt.get().isAvailable()) {
+        if (advisorWorkingHoursOptional.isEmpty() || !advisorWorkingHoursOptional.get().isAvailable()) {
             return availableSlots; // No working hours for this day
         }
 
-        WorkingHours workingHours = workingHoursOpt.get();
-        LocalTime startTime = LocalTime.parse(workingHours.getStartTime());
-        LocalTime endTime = LocalTime.parse(workingHours.getEndTime());
+        WorkingHours workingHours = advisorWorkingHoursOptional.get();
+        LocalTime startTime = LocalTime.parse(workingHours.getStart());
+        LocalTime endTime = LocalTime.parse(workingHours.getEnd());
 
         // Get booked appointments for the day
         LocalDateTime dayStart = date.atStartOfDay();

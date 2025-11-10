@@ -15,7 +15,9 @@ public class AdvisorSearchRequest {
     private Boolean availableToday;
     private String sortBy;
     private Sort.Direction sortDirection;
+    @Builder.Default
     private Integer page = 0;
+    @Builder.Default
     private Integer size = 12;
 
     // Getter für Pagination

@@ -85,4 +85,6 @@ public interface AdvisorRepository extends MongoRepository<Advisor, String> {
 
     @Query("{ 'languages': { $in: ?0 } }")
     List<Advisor> findByLanguages(List<String> languages);
+
+    Optional<Advisor> findByUserId(String userId);
 }

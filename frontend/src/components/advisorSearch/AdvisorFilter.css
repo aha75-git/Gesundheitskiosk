@@ -154,6 +154,17 @@
     margin: 0;
 }
 
+#check-advisor-filter-today-available {
+    left: -28px;
+    background: white;
+    border: 2px solid #4361ee;
+}
+
+.checkbox-label input:checked + #check-advisor-filter-today-available {
+    background: #4361ee;
+    border-color: #4361ee;
+}
+
 .checkmark {
     width: 20px;
     height: 20px;

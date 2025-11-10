@@ -1,0 +1,355 @@
+/* components/AppointmentTypeCard.css */
+.appointment-type-card {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.appointment-type-card:hover {
+    border-color: #4361ee;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-type-card.selected {
+    border-color: #4361ee;
+    background: linear-gradient(135deg, #f8f9ff 0%, #e3f2fd 100%);
+    box-shadow: 0 8px 25px rgba(67, 97, 238, 0.15);
+}
+
+.appointment-type-card.selected::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4361ee, #3a56d4);
+}
+
+/* Compact Version */
+.appointment-type-card.compact {
+    padding: 1rem;
+}
+
+.card-content-compact {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-section {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #4361ee, #3a56d4);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.details-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.details-section h4 {
+    margin: 0;
+    color: #333;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.duration {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.btn-book-compact {
+    background: #4361ee;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.btn-book-compact:hover {
+    background: #3a56d4;
+    transform: scale(1.1);
+}
+
+/* Regular Version */
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.type-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #4361ee, #3a56d4);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.type-info {
+    flex: 1;
+}
+
+.type-info h3 {
+    margin: 0 0 0.5rem 0;
+    /*color: #333;*/
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.type-description {
+    margin: 0;
+    /*color: #6c757d;*/
+    color: white;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.selection-indicator {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.radio-indicator {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #dee2e6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.appointment-type-card.selected .radio-indicator {
+    border-color: #4361ee;
+    background-color: #4361ee;
+}
+
+.radio-dot {
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.card-body {
+    margin-bottom: 1.5rem;
+}
+
+.type-details {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #495057;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.detail-item i {
+    color: #4361ee;
+    width: 16px;
+}
+
+.features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.feature i {
+    color: #28a745;
+    font-size: 0.8rem;
+    width: 16px;
+}
+
+.card-footer {
+    border-top: 1px solid #e9ecef;
+    padding-top: 1.5rem;
+}
+
+.btn-full {
+    width: 100%;
+    justify-content: center;
+}
+
+.selection-hint {
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.selected-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #28a745;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.selected-indicator i {
+    font-size: 1.1rem;
+}
+
+.select-hint {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Animation for selection */
+.appointment-type-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.appointment-type-card.selected {
+    animation: cardPulse 0.6s ease-in-out;
+}
+
+@keyframes cardPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .appointment-type-card {
+        padding: 1.25rem;
+    }
+
+    .card-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .selection-indicator {
+        margin-left: 0;
+    }
+
+    .type-details {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .type-icon {
+        align-self: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .appointment-type-card {
+        padding: 1rem;
+    }
+
+    .type-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+
+    .type-info h3 {
+        font-size: 1.1rem;
+    }
+
+    .features-list {
+        gap: 0.5rem;
+    }
+
+    .feature {
+        font-size: 0.85rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .appointment-type-card {
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
+    }
+
+    .appointment-type-card:hover {
+        border-color: #4361ee;
+    }
+
+    .appointment-type-card.selected {
+        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    }
+
+    .type-info h3 {
+        color: #f7fafc;
+    }
+
+    .type-description {
+        color: #cbd5e0;
+    }
+
+    .detail-item {
+        color: #cbd5e0;
+    }
+
+    .feature {
+        color: #cbd5e0;
+    }
+
+    .select-hint {
+        color: #a0aec0;
+    }
+}

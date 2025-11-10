@@ -5,6 +5,7 @@ import './Dashboard.css';
 export default function Dashboard() {
     const { user } = useAuth();
     const navigate = useNavigate();
+    // const [advisor, setAdvisor] = useState<Advisor | null>(null);
 
     if (!user) {
         navigate('/');
@@ -16,7 +17,7 @@ export default function Dashboard() {
             <div className="dashboard-header">
                 <div className="container">
                     <h1>Willkommen, {user.username}!</h1>
-                    <p>Sie haben sich erfolgreich angemeldet.</p>
+                    {/*<p>Sie haben sich erfolgreich angemeldet.</p>*/}
                 </div>
             </div>
 
@@ -57,6 +58,7 @@ export default function Dashboard() {
                             </div>
                             <div className="card-body">
                                 <div className="actions-grid">
+                                    {user.role !== "ADVISOR" && (
                                     <button
                                         onClick={() => navigate('/search')}
                                         className="action-btn"
@@ -64,6 +66,7 @@ export default function Dashboard() {
                                         <i className="fas fa-search"></i>
                                         <span>Berater suchen</span>
                                     </button>
+                                    )}
                                     <button className="action-btn"
                                             onClick={() => navigate('/appointments')}>
                                         <i className="fas fa-calendar-alt"></i>

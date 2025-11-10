@@ -1,3 +1,5 @@
+import type {WorkingHours} from "../advisor/AdvisorTypes.ts";
+
 export interface User {
     id: string;
     username: string;
@@ -69,6 +71,7 @@ export interface ProfileRequest {
     specialization: string;
     bio: string;
     qualification: string;
+    workingHours: WorkingHours[];
 }
 
 export interface ProfileResponse {
@@ -84,6 +87,7 @@ export interface UserProfile {
     bio?: string;
     qualification?: string;
     rating?: number;
+    workingHours: WorkingHours[];
 }
 
 export interface PersonalData {

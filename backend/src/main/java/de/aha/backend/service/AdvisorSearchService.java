@@ -32,6 +32,8 @@ public class AdvisorSearchService {
         Pageable pageable = createPageable(request);
         Page<Advisor> advisorPage = executeSearch(request, pageable);
 
+        System.out.println("searchAdvisors: " +  advisorPage.getContent());
+
         return buildSearchResponse(advisorPage, request);
     }
 
@@ -77,6 +79,8 @@ public class AdvisorSearchService {
 
     private Page<Advisor> searchAdvisorsWithCriteria(AdvisorSearchRequest request, Pageable pageable) {
         Query query = buildSearchQuery(request);
+
+        System.out.println("searchAdvisorsWithCriteria: " +  query);
 
         // Count total results
         long total = mongoTemplate.count(query, Advisor.class);

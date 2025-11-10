@@ -61,6 +61,7 @@ export default function AdvisorSearchPage () {
             setError('');
 
             const response = await advisorService.searchAdvisors(searchFilters, currentPage, 12);
+            console.log(response.advisors);
             setAdvisors(response.advisors);
             setFilteredAdvisors(response.advisors);
             setTotalPages(response.totalPages);
@@ -193,7 +194,7 @@ export default function AdvisorSearchPage () {
                                     <select>
                                         <option value="rating">Bewertung</option>
                                         <option value="experience">Erfahrung</option>
-                                        <option value="fee">Honorar</option>
+                                        {/*<option value="fee">Honorar</option>*/}
                                         <option value="name">Name</option>
                                     </select>
                                 </div>

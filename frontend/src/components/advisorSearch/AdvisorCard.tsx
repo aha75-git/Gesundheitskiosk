@@ -51,7 +51,7 @@ export default function AdvisorCard(props: Readonly<AdvisorCardProps>){
                             {renderStars(advisor.rating)}
                         </div>
                         <span className="rating-value">{advisor.rating.toFixed(1)}</span>
-                        <span className="reviews-count">({advisor.reviews.length} Bewertungen)</span>
+                        {/*<span className="reviews-count">({advisor.reviews.length} Bewertungen)</span>*/}
                     </div>
                 </div>
             </div>
@@ -72,10 +72,10 @@ export default function AdvisorCard(props: Readonly<AdvisorCardProps>){
                     <span>{advisor.qualifications.length} Qualifikationen</span>
                 </div>
 
-                <div className="detail-item">
-                    <i className="fas fa-euro-sign"></i>
-                    <span>{advisor.consultationFee} €/Stunde</span>
-                </div>
+                {/*<div className="detail-item">*/}
+                {/*    <i className="fas fa-euro-sign"></i>*/}
+                {/*    <span>{advisor.consultationFee} €/Stunde</span>*/}
+                {/*</div>*/}
             </div>
 
             <p className="advisor-bio">

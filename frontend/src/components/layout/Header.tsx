@@ -39,10 +39,13 @@ const Header: React.FC = () => {
                             <i className="fas fa-home"></i>
                             Home
                         </Link>
+
+                        {user && user.role !== "ADVISOR" && (
                         <Link to="/search" className={`nav-link ${isActiveLink('/search')}`}>
                             <i className="fas fa-search"></i>
                             Search
                         </Link>
+                        )}
 
                         {user ? (
                             <>

@@ -3,8 +3,9 @@ import type {
     AppointmentResponse,
     UpdateAppointmentStatusRequest,
     AdvisorAvailabilityResponse,
-    AppointmentBookingData
+    AppointmentBookingData, AppointmentType
 } from '../types/appointment/AppointmentTypes.ts';
+import type {Advisor} from "../types/advisor/AdvisorTypes.ts";
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';
 
@@ -57,6 +58,29 @@ export const appointmentService = {
         return response.data;
     },
 
+
+    // ###########################
+
+    getAppointmentById: async (appointmentId: string): Promise<AppointmentResponse> => {
+        const response = await api.get(`/appointments/${appointmentId}`);
+        return response.data;
+    },
+
+    getAdvisorById: async (advisorId: string): Promise<Advisor> => {
+        const response = await api.get(`/advisors/${advisorId}`);
+        return response.data;
+    },
+
+    // getMyAppointments -> macht es bereits
+    //
+    // getUserAppointments: async (): Promise<AppointmentResponse[]> => {
+    //     const response = await api.get('/appointments/my-appointments');
+    //     return response.data;
+    // },
+
+    // ###########################
+
+
     // Termin löschen
     cancelAppointment: async (appointmentId: string): Promise<void> => {
         await api.delete(`/appointments/${appointmentId}`);
@@ -93,6 +117,11 @@ export const appointmentService = {
             icon: 'fas fa-comments'
         }
     ],
+
+    // TODO
+    // getAppointmentType: (type: AppointmentType): AppointmentType | undefined => {
+    //     return appointmentService.getAppointmentTypes().find(t => t.type === type);
+    // },
 
     // Symptome-Vorschläge
     getCommonSymptoms: () => [

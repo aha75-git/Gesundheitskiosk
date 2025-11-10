@@ -2,6 +2,7 @@ package de.aha.backend.model.advisor;
 
 import de.aha.backend.model.AbstractDocument;
 import de.aha.backend.model.appointment.WorkingHours;
+import de.aha.backend.model.user.Address;
 import lombok.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -30,7 +32,7 @@ public class Advisor extends AbstractDocument {
     private String specialization;
 
     @Builder.Default
-    private Double rating = 0.0;
+    private Double rating = 5.0;
 
     @Indexed
     private List<String> languages;
@@ -38,15 +40,20 @@ public class Advisor extends AbstractDocument {
     private String imageUrl;
     private String email;
     private String phone;
+    private Address address;
 
     @TextIndexed
     private String bio;
 
-    private List<String> qualifications;
-    private List<WorkingHours> workingHours;
+    @Builder.Default
+    private List<String> qualifications = new ArrayList<>();
+    @Builder.Default
+    private List<WorkingHours> workingHours = new ArrayList<>();
 
-    private Integer experience; // Jahre Erfahrung
-    private Double consultationFee; // Honorar pro Stunde
+    @Builder.Default
+    private Integer experience = 0; // Jahre Erfahrung
+    @Builder.Default
+    private Double consultationFee = 0.0; // Honorar pro Stunde
 
     @Builder.Default
     private Boolean available = true;
@@ -54,7 +61,8 @@ public class Advisor extends AbstractDocument {
     @Builder.Default
     private Integer reviewCount = 0;
 
-    private List<Review> recentReviews;
+    @Builder.Default
+    private List<Review> recentReviews = new ArrayList<>();
 
     // Statistische Felder für schnelle Suchoperationen
     @Builder.Default

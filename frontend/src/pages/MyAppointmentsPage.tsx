@@ -195,7 +195,7 @@ const MyAppointmentsPage: React.FC = () => {
                                 : "Keine Termine entsprechen den aktuellen Filtereinstellungen."
                             }
                         </p>
-                        {appointments.length === 0 && (
+                        {user.role !== "ADVISOR" && (
                             <button
                                 onClick={() => navigate('/search')}
                                 className="btn btn-primary"

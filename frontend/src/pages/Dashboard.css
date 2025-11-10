@@ -1,5 +1,5 @@
 .dashboard {
-    min-height: calc(100vh - 70px);
+    min-height: calc(100vh - 150px);
     background: #f8f9fa;
     width: 100%;
 }

@@ -46,7 +46,7 @@ const AppointmentFilter: React.FC<AppointmentFilterProps> = ({
         <div className="appointment-filter">
             <div className="filter-header">
                 <h3>Filter</h3>
-                <span className="results-count">{appointmentCount} Termine gefunden</span>
+                <span className="results-count appointment-filter-results-count">{appointmentCount} Termine gefunden</span>
             </div>
 
             <div className="filter-grid">

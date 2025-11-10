@@ -12,7 +12,15 @@ export interface Advisor {
     experience: number; // years of experience
     consultationFee: number;
     available: boolean;
-    reviews: Review[];
+    recentReviews: Review[];
+    workingHours: WorkingHours[];
+}
+
+export interface WorkingHours {
+    dayOfWeek: "MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY";
+    start: string;
+    end: string;
+    available: boolean;
 }
 
 export interface Review {

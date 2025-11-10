@@ -53,9 +53,13 @@ export default function AppointmentBookingPage(){
             // Verfügbarkeit für heute laden
             const today = new Date().toISOString().split('T')[0];
             const availabilityDataResponse = await appointmentService.getAdvisorAvailability(advisorId!, today);
+
+            const dateFromResponse = new Date(availabilityDataResponse.date);
+            const dateToString = dateFromResponse.toISOString();
+
             const availabilityData: AdvisorAvailability = {
                 advisorId: availabilityDataResponse.advisorId,
-                date: availabilityDataResponse.date.toISOString(),
+                date: dateToString,
                 availableSlots: availabilityDataResponse.availableSlots,
                 workingHours: availabilityDataResponse.workingHours,
             }
@@ -93,10 +97,14 @@ export default function AppointmentBookingPage(){
 
     const handleAvailabilityUpdate = async (date: string) => {
         try {
+
             const availabilityDataResponse = await appointmentService.getAdvisorAvailability(advisorId!, date);
+            const dateFromResponse = new Date(availabilityDataResponse.date);
+            const dateToString = dateFromResponse.toISOString();
+
             const availabilityData: AdvisorAvailability = {
                 advisorId: availabilityDataResponse.advisorId,
-                date: availabilityDataResponse.date.toISOString(),
+                date: dateToString,
                 availableSlots: availabilityDataResponse.availableSlots,
                 workingHours: availabilityDataResponse.workingHours,
             }
@@ -178,7 +186,7 @@ export default function AppointmentBookingPage(){
                                 <div className="advisor-rating">
                                     <i className="fas fa-star"></i>
                                     <span>{advisor.rating.toFixed(1)}</span>
-                                    <span>({advisor.reviews.length} Bewertungen)</span>
+                                    <span>({advisor.recentReviews.length} Bewertungen)</span>
                                 </div>
                             </div>
                         </div>
@@ -238,10 +246,10 @@ export default function AppointmentBookingPage(){
                                     </div>
                                 </div>
 
-                                <div className="advisor-fee">
-                                    <i className="fas fa-euro-sign"></i>
-                                    <span>{advisor.consultationFee} € pro Stunde</span>
-                                </div>
+                                {/*<div className="advisor-fee">*/}
+                                {/*    <i className="fas fa-euro-sign"></i>*/}
+                                {/*    <span>{advisor.consultationFee} € pro Stunde</span>*/}
+                                {/*</div>*/}
 
                                 <div className="availability-status">
                                     <i className={`fas fa-circle ${advisor.available ? 'available' : 'unavailable'}`}></i>

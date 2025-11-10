@@ -1,10 +1,13 @@
 package de.aha.backend.mapper;
 
 import de.aha.backend.dto.user.*;
-import de.aha.backend.model.user.User;
-import de.aha.backend.model.user.UserProfile;
-import de.aha.backend.model.user.UserRole;
+import de.aha.backend.model.appointment.WorkingHours;
+import de.aha.backend.model.user.*;
 import de.aha.backend.util.PasswordUtil;
+import lombok.Builder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserMapper {
     public static User mapToUser(RegisterRequest request) {
@@ -56,7 +59,19 @@ public class UserMapper {
                 .build();
     }
 
-    public static UserProfileResponse mapToUserProfileResponse(UserProfile userProfile) {
-        return new UserProfileResponse(userProfile);
+    public static UserProfileResponse mapToUserProfileResponse(UserProfile userProfile, List<WorkingHours> workingHours) {
+        UserProfileDTO userProfileDTO = UserProfileDTO.builder()
+                .workingHours(workingHours)
+                .bio(userProfile.getBio())
+                .qualification(userProfile.getQualification())
+                .specialization(userProfile.getSpecialization())
+                .medicalInfo(userProfile.getMedicalInfo())
+                .contactInfo(userProfile.getContactInfo())
+                .languages(userProfile.getLanguages())
+                .personalData(userProfile.getPersonalData())
+                .rating(userProfile.getRating())
+                .reviewCount(userProfile.getReviewCount())
+                .build();
+        return new UserProfileResponse(userProfileDTO);
     }
 }

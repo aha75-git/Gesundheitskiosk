@@ -1,11 +1,13 @@
 package de.aha.backend.dto.user;
 
+import de.aha.backend.model.appointment.WorkingHours;
 import de.aha.backend.model.user.ContactInfo;
 import de.aha.backend.model.user.MedicalInfo;
 import de.aha.backend.model.user.PersonalData;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,9 +22,12 @@ public class UserProfileRequest {
     private PersonalData personalData;
     private MedicalInfo medicalInfo;
     private ContactInfo contactInfo;
-    private List<String> languages;
+    @Builder.Default
+    private List<String> languages = new ArrayList<>();
     private String specialization;
     private String bio;
     private String qualification;
     private Double rating;
+    @Builder.Default
+    private List<WorkingHours> workingHours = new ArrayList<>();
 }

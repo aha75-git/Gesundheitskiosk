@@ -1,6 +1,7 @@
 package de.aha.backend.controller;
 
 import de.aha.backend.model.advisor.Advisor;
+import de.aha.backend.model.appointment.WorkingHours;
 import de.aha.backend.security.AuthInterceptor;
 import de.aha.backend.security.AuthRequired;
 import de.aha.backend.service.AdvisorService;
@@ -34,7 +35,21 @@ public class AdvisorController {
     @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<Advisor> getAdvisorById(@PathVariable String advisorId) {
         Optional<Advisor> advisor = advisorService.getAdvisorById(advisorId);
+        System.out.println("Get Advisor by ID: " + advisor.get());
         return advisor.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    // WorkingHours Update Endpoint
+    @PutMapping("/{id}/working-hours")
+    public ResponseEntity<Advisor> updateWorkingHours(
+            @PathVariable String id,
+            @RequestBody List<WorkingHours> workingHours) {
+        try {
+            Advisor updatedAdvisor = advisorService.updateWorkingHours(id, workingHours);
+            return ResponseEntity.ok(updatedAdvisor);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -124,14 +124,14 @@ class UserControllerTest {
         // GIVEN
         RegisterRequest request = new RegisterRequest("testmax","test@email.com", "password123", UserRole.USER);
         UserResponse userResponse = UserResponse.builder().email("test@email.com").build();
-
+        UserLoginResponse userLoginResponse = new UserLoginResponse("password123", userResponse);
         // WHEN
-        when(userService.registerUser(request)).thenReturn(userResponse);
+        when(userService.registerUser(request)).thenReturn(userLoginResponse);
         var result = userController.registerUser(request);
 
         // THEN
         assertEquals(org.springframework.http.HttpStatus.OK, result.getStatusCode());
-        assertEquals(userResponse, result.getBody());
+        assertEquals(userLoginResponse, result.getBody());
     }
 
     @Test
@@ -169,7 +169,7 @@ class UserControllerTest {
     public void testGetProfile() {
         // GIVEN
         UserProfileResponse expectedResponse = UserProfileResponse.builder()
-                .userProfile(UserProfile.builder()
+                .userProfile(UserProfileDTO.builder()
                         .contactInfo(ContactInfo.builder()
                                 .phone("123456789")
                                 .allowHouseVisits(true)
@@ -214,7 +214,7 @@ class UserControllerTest {
                 .build();
 
         UserProfileResponse expectedResponse = UserProfileResponse.builder()
-                .userProfile(UserProfile.builder()
+                .userProfile(UserProfileDTO.builder()
                         .contactInfo(ContactInfo.builder()
                                 .phone("123456789")
                                 .allowHouseVisits(true)

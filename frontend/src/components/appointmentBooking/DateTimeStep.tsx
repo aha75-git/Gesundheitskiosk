@@ -21,6 +21,14 @@ const DateTimeStep: React.FC<DateTimeStepProps> = ({
                                                        onDateTimeSelect,
                                                        onAvailabilityUpdate
                                                    }) => {
+
+    // availability?.availableSlots?.map(slots => {
+    //     console.log('slots.start: ', slots.start);
+    //     console.log('slots.end: ', slots.end);
+    // });
+
+    //console.log("availability?.availableSlots: " + availability?.availableSlots);
+
     const [selectedDate, setSelectedDate] = useState<string>(
         new Date().toISOString().split('T')[0]
     );
@@ -30,7 +38,7 @@ const DateTimeStep: React.FC<DateTimeStepProps> = ({
         onAvailabilityUpdate(date);
     };
 
-    const formatTimeSlot = (start: string, end: string) => {
+    const formatTimeSlot = (start: Date, end: Date) => {
         const startTime = new Date(start).toLocaleTimeString('de-DE', {
             hour: '2-digit',
             minute: '2-digit'
@@ -41,6 +49,18 @@ const DateTimeStep: React.FC<DateTimeStepProps> = ({
         });
         return `${startTime} - ${endTime}`;
     };
+
+    // const formatTimeSlotByString = (start: string, end: string) => {
+    //     const startTime = new Date(start).toLocaleTimeString('de-DE', {
+    //         hour: '2-digit',
+    //         minute: '2-digit'
+    //     });
+    //     const endTime = new Date(end).toLocaleTimeString('de-DE', {
+    //         hour: '2-digit',
+    //         minute: '2-digit'
+    //     });
+    //     return `${startTime} - ${endTime}`;
+    // };
 
     const isTimeSlotAvailable = (slot: any) => {
         return slot.available;
@@ -118,11 +138,11 @@ const DateTimeStep: React.FC<DateTimeStepProps> = ({
                             .map((slot, index) => (
                                 <button
                                     key={index}
-                                    onClick={() => onDateTimeSelect(slot.start.toISOString())}
-                                    className={`time-slot ${selectedDateTime === slot.start.toISOString()? 'selected' : ''}`}
+                                    onClick={() => onDateTimeSelect(new Date(slot.start).toISOString())}
+                                    className={`time-slot ${selectedDateTime === new Date(slot.start).toISOString()? 'selected' : ''}`}
                                 >
                   <span className="time-range">
-                    {formatTimeSlot(slot.start.toISOString(), slot.end.toISOString())}
+                    {formatTimeSlot(slot.start, slot.end)}
                   </span>
                                     <span className="duration">({duration} min)</span>
                                 </button>

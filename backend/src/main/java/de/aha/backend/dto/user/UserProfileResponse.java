@@ -8,5 +8,5 @@ import lombok.Builder;
  * Contains user porfile information.
  */
 @Builder
-public record UserProfileResponse(UserProfile userProfile) {
+public record UserProfileResponse(UserProfileDTO userProfile) {
 }

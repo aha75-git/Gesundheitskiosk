@@ -1,3 +1,18 @@
+#profiler-form-allow-home-visits {
+    left: -16px;
+    top: 4px;
+    border: 2px solid #4361ee;
+    background: white;
+    width: 20px;
+    height: 20px;
+    display:inline-block;
+}
+
+.checkbox-label input:checked + #profiler-form-allow-home-visits {
+    background: #4361ee;
+    border-color: #4361ee;
+}
+
 .profile-form-container {
     display: grid;
     grid-template-columns: 280px 1fr;

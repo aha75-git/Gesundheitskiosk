@@ -1,0 +1,344 @@
+#div-form-group-working-hours-available {
+    margin-bottom: 0.8rem;
+}
+
+#text-working-hours-available {
+    margin-bottom: 5px;
+}
+
+#label-form-group-working-hoursdiv-form-group-working-hours {
+    display:flex;
+}
+
+#label-form-group-working-hoursdiv-form-group-working-hours input {
+    margin-bottom: 5px;
+}
+
+#check-working-hours-available {
+    left: -16px;
+    border: 2px solid #4361ee;
+    background: white;
+    width: 18px;
+    height: 18px;
+    /*display:inline-block;*/
+}
+
+.checkbox-label input:checked + #check-working-hours-available {
+    background: #4361ee;
+    border-color: #4361ee;
+}
+
+#div-button-add-working-hours-available {
+    margin-bottom: 1.7rem;
+}
+
+.working-hours-editor {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.working-hours-editor h3 {
+    margin: 0 0 1.5rem 0;
+    color: #333;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.working-hours-add {
+    margin-bottom: 1.5rem;
+}
+
+.add-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto auto;
+    gap: 1rem;
+    align-items: end;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #4361ee;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-checkbox {
+    margin-right: 0.5rem;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkmark {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: #28a745;
+    border-radius: 3px;
+    margin-right: 0.5rem;
+    position: relative;
+}
+
+.checkmark::after {
+    content: '✓';
+    color: white;
+    font-size: 0.8rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn-add {
+    background: #4361ee;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.btn-add:hover {
+    background: #3a56d4;
+    transform: scale(1.05);
+}
+
+.btn-add:active {
+    transform: scale(0.95);
+}
+
+.working-hours-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.no-working-hours {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: white;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    color: #6c757d;
+    width: 100%;
+}
+
+.no-working-hours i {
+    font-size: 1.2rem;
+    opacity: 0.7;
+}
+
+.working-hour-chip {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    min-width: 250px;
+}
+
+.working-hour-chip.available {
+    border-color: #28a745;
+    background: #f8fff9;
+}
+
+.working-hour-chip.unavailable {
+    border-color: #dc3545;
+    background: #fff5f5;
+    opacity: 0.7;
+}
+
+.chip-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.chip-content .day {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.chip-content .time {
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.chip-content .availability {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.working-hour-chip.available .chip-content .availability {
+    color: #28a745;
+}
+
+.working-hour-chip.unavailable .chip-content .availability {
+    color: #dc3545;
+}
+
+.chip-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.btn-toggle,
+.btn-remove {
+    border: none;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.btn-toggle.available {
+    background: #28a745;
+    color: white;
+}
+
+.btn-toggle.unavailable {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-remove {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-toggle:hover,
+.btn-remove:hover {
+    transform: scale(1.1);
+}
+
+.btn-toggle:active,
+.btn-remove:active {
+    transform: scale(0.95);
+}
+
+.working-hours-help {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 8px;
+    color: #1976d2;
+}
+
+.working-hours-help i {
+    font-size: 1.1rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+.working-hours-help span {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .add-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .btn-add {
+        grid-column: span 2;
+        justify-self: start;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .working-hours-editor {
+        padding: 1rem;
+    }
+
+    .add-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .btn-add {
+        grid-column: span 1;
+    }
+
+    .working-hour-chip {
+        min-width: 100%;
+    }
+
+    .chip-actions {
+        flex-direction: column;
+        margin-left: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .add-row {
+        grid-template-columns: 1fr;
+    }
+
+    .working-hours-chips {
+        flex-direction: column;
+    }
+}

@@ -67,11 +67,11 @@ export default function AppointmentBooking() {
                                 </div>
                             </div>
 
-                            <div className="price-info">
-                                <h4>Preis</h4>
-                                <div className="price">€89,00</div>
-                                <p>pro 60 Minuten</p>
-                            </div>
+                            {/*<div className="price-info">*/}
+                            {/*    <h4>Preis</h4>*/}
+                            {/*    <div className="price">€89,00</div>*/}
+                            {/*    <p>pro 60 Minuten</p>*/}
+                            {/*</div>*/}
                         </div>
                     </div>
                 </div>

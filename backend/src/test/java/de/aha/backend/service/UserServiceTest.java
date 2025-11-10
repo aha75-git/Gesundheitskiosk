@@ -1,6 +1,7 @@
 package de.aha.backend.service;
 
 import de.aha.backend.dto.user.*;
+import de.aha.backend.model.advisor.Advisor;
 import de.aha.backend.model.user.Address;
 import de.aha.backend.model.user.ContactInfo;
 import de.aha.backend.model.user.User;
@@ -41,6 +42,9 @@ class UserServiceTest {
 
     //@Mock
     //private UserMapper mapper;
+
+    @Mock
+    private AdvisorService  advisorService;
 
     @InjectMocks
     private UserService userService;
@@ -200,7 +204,11 @@ class UserServiceTest {
                 .build();
         user.setProfile(expectedProfile);
 
+        Optional<Advisor> advisorOptional = Optional.ofNullable(Advisor.builder()
+                .bio("Bio").email("email@email.com").build());
+
         when(repository.getOrThrow("1")).thenReturn(user);
+        when(advisorService.getAdvisorByUserId("1")).thenReturn(advisorOptional);
 
         UserProfileResponse response = userService.findProfile("1");
         assertEquals("123456789", response.userProfile().getContactInfo().getPhone());

@@ -3,6 +3,8 @@ package de.aha.backend.service;
 import de.aha.backend.dto.user.*;
 import de.aha.backend.exception.AppAuthenticationException;
 import de.aha.backend.exception.ExecutionConflictException;
+import de.aha.backend.model.advisor.Advisor;
+import de.aha.backend.model.appointment.WorkingHours;
 import de.aha.backend.model.user.User;
 import de.aha.backend.model.user.UserRole;
 import de.aha.backend.repository.UserRepository;
@@ -19,6 +21,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import static de.aha.backend.mapper.UserMapper.*;
 
 @Slf4j
@@ -28,6 +34,7 @@ public class UserService implements UserDetailsService {
 
     private final TokenInteract tokenInteract;
     private final UserRepository userRepository;
+    private final AdvisorService advisorService;
 
     /** Finds a user by ID and returns a UserResponse DTO.
      *
@@ -35,6 +42,7 @@ public class UserService implements UserDetailsService {
      * @return UserResponse containing user details
      */
     public UserResponse find(String id) {
+        log.info("UserService.find by id: {}", id);
         User user = userRepository.getOrThrow(id);
         //return mapper.toResponse(repository.getOrThrow(id));
 
@@ -69,18 +77,22 @@ public class UserService implements UserDetailsService {
      * @param request request containing user creation details
      */
     public void create(UserCreateRequest request) {
+        log.info("UserService.create with request: {}", request);
         checkUniqueEmail(request.email());
         userRepository.save(mapToUser(request, PasswordUtil.hash(request.password())));
     }
 
-    public UserResponse registerUser(@Valid RegisterRequest request) {
+    public UserLoginResponse registerUser(@Valid RegisterRequest request) {
         log.info("Registering new user with email: {}", request.getEmail());
 
         checkUniqueEmail(request.getEmail());
         User user = userRepository.save(mapToUser(request));
         //cacheUser(user);
+
+        UserLoginRequest userLoginRequest = new UserLoginRequest(request.getEmail(), request.getPassword());
         log.info("User registered successfully: {}", user.getId());
-        return mapToResponse(user);
+//        return mapToResponse(user);
+        return authenticateUser(userLoginRequest);
     }
 
     public UserLoginResponse authenticateUser(@Valid UserLoginRequest request) {
@@ -120,6 +132,7 @@ public class UserService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        log.info("UserService.loadUserByUsername: {}", userId);
         User user = userRepository.getOrThrow(userId);
 
         return UserDetailsImpl.builder()
@@ -136,6 +149,7 @@ public class UserService implements UserDetailsService {
      * @return response containing updated user details
      */
     public UserResponse updatePassword(String userId, UserUpdatePasswordRequest request) {
+        log.info("UserService.updatePassword of userId: {} ; request: {}", userId, request);
         User user = userRepository.getOrThrow(userId);
         verifyPassword(request.oldPassword(), user.getPassword());
         user.setPassword(PasswordUtil.hash(request.password()));
@@ -148,6 +162,7 @@ public class UserService implements UserDetailsService {
      * @param userId ID of the user to delete
      */
     public void remove(String userId) {
+        log.info("UserService.remove(userId): {}", userId);
         User user = userRepository.getOrThrow(userId);
         userRepository.delete(user);
     }
@@ -159,6 +174,7 @@ public class UserService implements UserDetailsService {
      * @return User entity
      */
     public User findByEmail(String email) {
+        log.info("UserService.findByEmail: {}", email);
         return userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new BadCredentialsException(
                         "User not found with email: " + email
@@ -171,6 +187,7 @@ public class UserService implements UserDetailsService {
      * @return User entity
      */
     public User findById(String userId) {
+        log.info("UserService.findById: {}", userId);
         return userRepository.getOrThrow(userId);
     }
     /**
@@ -180,6 +197,7 @@ public class UserService implements UserDetailsService {
      * @param email user's email address
      */
     private void checkUniqueEmail(String email) {
+        log.info("UserService.checkUniqueEmail: {}", email);
         userRepository.findByEmailIgnoreCase(email)
                 .ifPresent(u -> {
                     log.info("User with ID: '{}' and with email '{}' already exists", u.getId(), email);
@@ -196,6 +214,7 @@ public class UserService implements UserDetailsService {
      * @param passwordHash hashed password
      */
     private void verifyPassword(String rawPassword, String passwordHash) {
+        log.info("UserService.verifyPassword(rawPassword, passwordHash): {} , {}", rawPassword, passwordHash);
         if (!PasswordUtil.matches(rawPassword, passwordHash)) {
             throw new BadCredentialsException("Invalid password");
         }
@@ -208,6 +227,7 @@ public class UserService implements UserDetailsService {
      * @return login response containing JWT token and user info
      */
     public UserLoginResponse getToken(UserLoginRequest request) {
+        log.info("UserService.getToken(request): {}", request);
         User user = findByEmail(request.email());
         verifyPassword(request.password(), user.getPassword());
         UserResponse response = mapToResponse(user);
@@ -221,6 +241,7 @@ public class UserService implements UserDetailsService {
      * @return true if token is valid, false otherwise
      */
     public Boolean validateToken(HttpServletRequest request) {
+        log.info("UserService.validateToken(request): {}", request);
         String token = tokenInteract.getToken(request);
         return tokenInteract.validateToken(token);
     }
@@ -233,6 +254,7 @@ public class UserService implements UserDetailsService {
      * @return response containing updated user profile details
      */
     public UserProfileResponse saveProfile(String userId, @Valid UserProfileRequest request) {
+        log.info("UserService.saveProfile(userId, request): {} , {}", userId, request);
         User user = userRepository.getOrThrow(userId);
         user.setProfile(mapToUserProfile(request));
         if(user.getRole() == UserRole.ADMIN) {
@@ -240,7 +262,71 @@ public class UserService implements UserDetailsService {
             user.setUsername(request.getUsername());
         }
         userRepository.save(user);
-        return mapToUserProfileResponse(user.getProfile());
+
+        if(user.getRole() == UserRole.ADVISOR) {
+            // TODO workingHours
+            var advisorOptional = advisorService.getAdvisorByUserId(user.getId());
+            if(advisorOptional.isPresent()) {
+                this.updateAdvisor(advisorOptional.get(), request);
+            } else {
+                this.saveAdvisor(user, request);
+            }
+        }
+
+        return mapToUserProfileResponse(user.getProfile(), request.getWorkingHours());
+    }
+
+    private void updateAdvisor(Advisor advisor, @Valid UserProfileRequest request) {
+        log.info("UserService.updateAdvisor(advisor, request): {} , {}", advisor, request);
+        String name = request.getPersonalData().getFirstName() + " " + request.getPersonalData().getLastName();
+
+        advisor.setName(name);
+        advisor.setEmail(request.getEmail());
+        advisor.setSpecialization(request.getSpecialization());
+        advisor.setPhone(request.getContactInfo().getPhone());
+        advisor.setRating(request.getRating());
+        advisor.setLanguages(request.getLanguages());
+        advisor.setBio(request.getBio());
+        advisor.setWorkingHours(request.getWorkingHours());
+
+//        Advisor advisorUpdated = Advisor.builder()
+//                .name(name)
+//                .userId(advisor.getUserId())
+//                .specialization(request.getSpecialization())
+//                .email(request.getEmail())
+//                .phone(request.getContactInfo().getPhone())
+//                .rating(request.getRating())
+//                .reviewCount(0)
+//                .experience(0)
+//                .languages(request.getLanguages())
+//                .consultationFee(0.0)
+//                .bio(request.getBio())
+//                .available(true)
+//                .workingHours(request.getWorkingHours())
+//                .build();
+//        advisorUpdated.setId(advisor.getId());
+//        advisorUpdated.setCreationDate(LocalDateTime.now());
+        advisorService.save(advisor);
+    }
+
+    private void saveAdvisor(User user, @Valid UserProfileRequest request) {
+        String name = user.getProfile().getPersonalData().getFirstName() + " " + user.getProfile().getPersonalData().getLastName();
+        Advisor advisor = Advisor.builder()
+                .name(name)
+                .userId(user.getId())
+                .specialization(user.getProfile().getSpecialization())
+                .email(user.getEmail())
+                .phone(user.getProfile().getContactInfo().getPhone())
+                .rating(5.0)
+                .reviewCount(0)
+                .experience(0)
+                .languages(user.getProfile().getLanguages())
+                .consultationFee(0.0)
+                .bio(user.getProfile().getBio())
+                .available(true)
+                .workingHours(request.getWorkingHours())
+                .build();
+        advisorService.save(advisor);
     }
 
     /**
@@ -250,8 +336,14 @@ public class UserService implements UserDetailsService {
      * @return response containing user profile details
      */
     public UserProfileResponse findProfile(String userId) {
+        log.info("UserService.findProfile(userId): {}", userId);
         User user = userRepository.getOrThrow(userId);
-        return mapToUserProfileResponse(user.getProfile());
+        List<WorkingHours> workingHours = new ArrayList<>();
+        var advisorOptional = advisorService.getAdvisorByUserId(userId);
+        if(advisorOptional.isPresent()) {
+            workingHours = advisorOptional.get().getWorkingHours();
+        }
+        return mapToUserProfileResponse(user.getProfile(),  workingHours);
     }
 
     // TODO

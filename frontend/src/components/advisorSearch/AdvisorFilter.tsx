@@ -18,6 +18,8 @@ export default function AdvisorFilter(props: Readonly<AdvisorFilterProps>){
          onClearFilters
     } = props;
 
+    const useMaxFee = false;
+
     const hasActiveFilters =
         filters.specialization !== '' ||
         filters.language !== '' ||
@@ -90,22 +92,24 @@ export default function AdvisorFilter(props: Readonly<AdvisorFilterProps>){
                 </div>
             </div>
 
-            <div className="filter-section">
-                <h4>Maximales Honorar</h4>
-                <div className="fee-filter">
-                    <input
-                        type="range"
-                        min="0"
-                        max="500"
-                        step="10"
-                        value={filters.maxFee}
-                        onChange={(e) => onFilterChange({ maxFee: parseInt(e.target.value) })}
-                    />
-                    <div className="fee-value">
-                        Bis {filters.maxFee} €
+            { useMaxFee &&
+                <div className="filter-section">
+                    <h4>Maximales Honorar</h4>
+                    <div className="fee-filter">
+                        <input
+                            type="range"
+                            min="0"
+                            max="500"
+                            step="10"
+                            value={filters.maxFee}
+                            onChange={(e) => onFilterChange({ maxFee: parseInt(e.target.value) })}
+                        />
+                        <div className="fee-value">
+                            Bis {filters.maxFee} €
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
 
             <div className="filter-section">
                 <label className="checkbox-label">
@@ -114,7 +118,7 @@ export default function AdvisorFilter(props: Readonly<AdvisorFilterProps>){
                         checked={filters.availableToday}
                         onChange={(e) => onFilterChange({ availableToday: e.target.checked })}
                     />
-                    <span className="checkmark"></span>
+                    <span className="checkmark" id="check-advisor-filter-today-available"></span>
                     Heute verfügbar
                 </label>
             </div>

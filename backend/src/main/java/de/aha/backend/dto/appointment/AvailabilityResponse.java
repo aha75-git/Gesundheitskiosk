@@ -10,5 +10,6 @@ import java.util.List;
 public record AvailabilityResponse(
         String advisorId,
         LocalDate date,
-        List<TimeSlot> availableSlots
+        List<TimeSlot> availableSlots,
+        WorkingHoursDTO workingHours
 ) {}

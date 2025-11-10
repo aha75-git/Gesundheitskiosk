@@ -2,6 +2,7 @@ package de.aha.backend.model.user;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
@@ -151,7 +152,7 @@ class UserTest {
         PersonalData personalData = PersonalData.builder()
                 .firstName("Petra")
                 .lastName("Mustermann")
-                .dateOfBirth(LocalDateTime.of(1957, Month.MARCH, 28, 14, 33, 48))
+                .dateOfBirth(LocalDate.of(1957, Month.MARCH, 28))
                 .gender("Frau")
                 .build();
 

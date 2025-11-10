@@ -81,7 +81,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error"),
             @ApiResponse(responseCode = "503", description = "Service unavailable"),
     })
-    public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<UserLoginResponse> registerUser(@Valid @RequestBody RegisterRequest request) {
         var response = service.registerUser(request);
         return ResponseEntity.ok(response);
     }

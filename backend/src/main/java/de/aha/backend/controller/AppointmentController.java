@@ -89,7 +89,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "503", description = "Service unavailable"),
     })
     public ResponseEntity<List<AppointmentResponse>> getUserAppointments(@RequestParam(required = false) LocalDate date) {
-        var appointments = appointmentService.getUserAppointments(date, authInterceptor.getUserId());
+        var appointments = appointmentService.getAppointments(date, authInterceptor.getUserId());
         return ResponseEntity.ok(appointments);
     }
 
@@ -122,6 +122,7 @@ public class AppointmentController {
             @PathVariable String advisorId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         AvailabilityResponse response = appointmentService.checkAvailability(advisorId, date);
+        System.out.println("Check Availability Response: " + response);
         return ResponseEntity.ok(response);
     }
 

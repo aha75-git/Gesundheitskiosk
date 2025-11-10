@@ -10,6 +10,7 @@ import type {
     Medication, User
 } from '../../types/user/UserTypes.ts';
 import './ProfileForm.css';
+import WorkingHoursEditor from "./WorkingHoursEditor.tsx";
 
 interface ProfileFormProps {
     profile: UserProfile | null;
@@ -61,7 +62,8 @@ export default function ProfileForm(props: Readonly<ProfileFormProps>) {
         languages: profile?.languages || [],
         specialization: profile?.specialization || '',
         bio: profile?.bio || '',
-        qualification: profile?.qualification || ''
+        qualification: profile?.qualification || '',
+        workingHours: profile?.workingHours || []
     });
 
     const [newAllergy, setNewAllergy] = useState('');
@@ -452,7 +454,7 @@ export default function ProfileForm(props: Readonly<ProfileFormProps>) {
                                         checked={formData.contactInfo.allowHouseVisits}
                                         onChange={(e) => handleContactInfoChange('allowHouseVisits', e.target.checked)}
                                     />
-                                    <span className="checkmark"></span>
+                                    <span className="checkmark" id="profiler-form-allow-home-visits"></span>
                                     <span className="span-of-checkbox">Hausbesuche erlauben</span>
                                 </label>
                             </div>
@@ -680,6 +682,11 @@ export default function ProfileForm(props: Readonly<ProfileFormProps>) {
                                     rows={4}
                                 />
                             </div>
+
+                            <WorkingHoursEditor
+                                workingHours={formData.workingHours}
+                                onChange={(workingHours) => setFormData({ ...formData, workingHours })}
+                            />
                         </div>
                     )}
 

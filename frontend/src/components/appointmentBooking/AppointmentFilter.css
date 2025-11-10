@@ -18,9 +18,9 @@
     margin: 0;
 }
 
-.results-count {
+.appointment-filter-results-count {
     background: #4361ee;
-    color: white;
+    color: white !important;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.9rem;

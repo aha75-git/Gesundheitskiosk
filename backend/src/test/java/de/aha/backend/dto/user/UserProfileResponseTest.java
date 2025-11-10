@@ -11,7 +11,7 @@ class UserProfileResponseTest {
     @Test
     void validUserProfileRequest_ShouldPassValidation() {
         UserProfileResponse response = UserProfileResponse.builder()
-                .userProfile(UserProfile.builder()
+                .userProfile(UserProfileDTO.builder()
                         .contactInfo(ContactInfo.builder()
                                 .phone("123456789")
                                 .allowHouseVisits(true)
