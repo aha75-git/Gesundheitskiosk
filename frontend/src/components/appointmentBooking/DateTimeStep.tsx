@@ -28,6 +28,7 @@ const DateTimeStep: React.FC<DateTimeStepProps> = ({
     // });
 
     //console.log("availability?.availableSlots: " + availability?.availableSlots);
+    console.log(advisor, availability, selectedDateTime);
 
     const [selectedDate, setSelectedDate] = useState<string>(
         new Date().toISOString().split('T')[0]

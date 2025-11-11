@@ -6,6 +6,7 @@ import type {AppointmentResponse, AppointmentStatus} from '../types/appointment/
 import AppointmentCard from '../components/appointmentBooking/AppointmentCard';
 import AppointmentFilter from '../components/appointmentBooking/AppointmentFilter';
 import './MyAppointmentsPage.css';
+import AppointmentPlanningPage from "./AppointmentPlanningPage.tsx";
 
 const MyAppointmentsPage: React.FC = () => {
     const { user } = useAuth();
@@ -14,6 +15,7 @@ const MyAppointmentsPage: React.FC = () => {
     const [filteredAppointments, setFilteredAppointments] = useState<AppointmentResponse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
+    // const [isStatusUpdated, setIsStatusUpdated] = useState(false);
     const [filter, setFilter] = useState<{
         status: AppointmentStatus | 'ALL';
         dateRange: 'upcoming' | 'past' | 'all';
@@ -92,6 +94,7 @@ const MyAppointmentsPage: React.FC = () => {
             await appointmentService.updateAppointmentStatus(appointmentId, { status: newStatus });
 
             // Aktualisiere lokalen State
+            // setIsStatusUpdated(true);
             setAppointments(prev =>
                 prev.map(appointment =>
                     appointment.id === appointmentId
@@ -172,6 +175,9 @@ const MyAppointmentsPage: React.FC = () => {
                     </div>
                 </div>
 
+                {user && user.role === "ADVISOR" && (
+                    <AppointmentPlanningPage />
+                )}
                 <AppointmentFilter
                     filter={filter}
                     onFilterChange={handleFilterChange}

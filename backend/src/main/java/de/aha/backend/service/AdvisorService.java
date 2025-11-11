@@ -1,5 +1,6 @@
 package de.aha.backend.service;
 
+import de.aha.backend.exception.NotFoundObjectException;
 import de.aha.backend.model.advisor.Advisor;
 import de.aha.backend.model.appointment.WorkingHours;
 import de.aha.backend.repository.AdvisorRepository;
@@ -35,6 +36,12 @@ public class AdvisorService {
     public Optional<Advisor> getAdvisorById(String id) {
         log.info("getAdvisorById: {}", id);
         return advisorRepository.findById(id);
+    }
+
+    public Advisor getAdvisorByUser(String userId) {
+        log.info("getAdvisorByRole with userId: {}", userId);
+        return advisorRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundObjectException("Advisor not found with user id: " + userId));
     }
 
     public Optional<Advisor> getAdvisorByUserId(String userId) {

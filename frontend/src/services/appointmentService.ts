@@ -3,7 +3,7 @@ import type {
     AppointmentResponse,
     UpdateAppointmentStatusRequest,
     AdvisorAvailabilityResponse,
-    AppointmentBookingData, AppointmentType
+    AppointmentBookingData
 } from '../types/appointment/AppointmentTypes.ts';
 import type {Advisor} from "../types/advisor/AdvisorTypes.ts";
 

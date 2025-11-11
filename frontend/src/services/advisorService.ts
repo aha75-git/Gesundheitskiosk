@@ -30,6 +30,12 @@ export const advisorService = {
         return response.data;
     },
 
+    // Berater von User-Daten als User-Role "Advisor" abrufen
+    getAdvisorByUser: async (): Promise<Advisor> => {
+        const response = await api.get(`/advisors/user/advisor`);
+        return response.data;
+    },
+
     // Berater suchen mit Filtern
     searchAdvisors: async (
         filters: Partial<SearchFilters>,
