@@ -16,6 +16,8 @@ import AdvisorSearchPage from "./pages/AdvisorSearchPage.tsx";
 import AppointmentBookingPage from "./pages/AppointmentBookingPage.tsx";
 import AppointmentConfirmationPage from "./pages/AppointmentConfirmationPage.tsx";
 import AdvisorProfilePage from "./pages/AdvisorProfilePage.tsx";
+import Impressum from "./pages/Impressum.tsx";
+import Datenschutz from "./pages/Datenschutz.tsx";
 
 function App() {
     return (
@@ -34,6 +36,8 @@ function App() {
                         <Route path="/appointment-confirmation" element={<AppointmentConfirmationPage />} />
                         <Route path="/advisor/:advisorId" element={<AdvisorProfilePage />} />
                         <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
+                        <Route path="/impressum" element={<Impressum />} />
+                        <Route path="/datenschutz" element={<Datenschutz />} />
                     </Routes>
                 </Layout>
             </Router>
