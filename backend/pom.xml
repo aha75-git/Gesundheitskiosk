@@ -28,6 +28,7 @@
     </scm>
     <properties>
         <java.version>22</java.version>
+        <sonar.organization>aha75-git</sonar.organization>
         <spring.version>3.5.6</spring.version>
         <springdoc-openapi.version>2.8.13</springdoc-openapi.version>
         <fastjson.version>2.0.59</fastjson.version>
