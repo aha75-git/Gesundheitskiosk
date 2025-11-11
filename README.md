@@ -59,6 +59,30 @@ Eine barrierefreie, mehrsprachige Gesundheitsplattform, die digitale Brücken zw
 - **Intuitive Navigation** und Bedienung
 - **Schnelle Ladezeiten** durch optimierte Performance
 
+## 📄 Rechtliche Dokumente
+
+Die Plattform enthält alle notwendigen rechtlichen Dokumente:
+
+### Impressum
+- **Pflichtangaben** gemäß § 5 TMG
+- **Kontaktdaten** des Betreibers
+- **Haftungshinweise** für Inhalte und Links
+- **Urheberrechtshinweise**
+
+### Datenschutzerklärung
+- **Umfassende Informationen** zur Datenverarbeitung
+- **Besondere Kategorien** (Gesundheitsdaten)
+- **Rechte der Betroffenen** gemäß DSGVO
+- **Sicherheitsmaßnahmen** und Speicherdauern
+
+### Zugang
+- Impressum: `/impressum`
+- Datenschutz: `/datenschutz`
+- Verlinkt im Footer jeder Seite
+
+### Wichtiger Hinweis
+Die bereitgestellten rechtlichen Dokumente sind Muster und müssen vor dem produktiven Einsatz von einem Rechtsanwalt überprüft und an Ihre spezifischen Gegebenheiten angepasst werden.
+
 ## 🛠 Technologiestack
 
 ### Frontend
