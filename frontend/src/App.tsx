@@ -35,9 +35,9 @@ function App() {
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/appointment-confirmation" element={<AppointmentConfirmationPage />} />
                         <Route path="/advisor/:advisorId" element={<AdvisorProfilePage />} />
-                        <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
                         <Route path="/impressum" element={<Impressum />} />
                         <Route path="/datenschutz" element={<Datenschutz />} />
+                        <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
                     </Routes>
                 </Layout>
             </Router>
