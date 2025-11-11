@@ -21,6 +21,7 @@ import java.util.Optional;
 @Tag(name = "advisor", description = "advisor endpoints")
 public class AdvisorController {
     private final AdvisorService advisorService;
+    private final AuthInterceptor authInterceptor;
 
     @GetMapping
     @SecurityRequirement(name = "Bearer Authentication")
@@ -51,5 +52,13 @@ public class AdvisorController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/user/advisor")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<Advisor> getAdvisorByUser() {
+        Advisor advisor = advisorService.getAdvisorByUser(authInterceptor.getUserId());
+        System.out.println("Get Advisor by ID: " + advisor);
+        return ResponseEntity.ok(advisor);
     }
 }

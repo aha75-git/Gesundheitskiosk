@@ -165,11 +165,23 @@ public class AppointmentService {
         log.info("Updating appointment status: {} to {} by user: {}",
                 appointmentId, request.status(), userId);
 
+        String advisorId = userId;
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundObjectException("User not found with user id: " + userId));
+
+        // falls Advisor den Termin ändert
+        if (user.getRole() == UserRole.ADVISOR) {
+            Advisor advisor = advisorRepository.findByUserId(userId)
+                    .orElseThrow(() -> new NotFoundObjectException("Advisor not found with user id: " + userId));
+
+            advisorId = advisor.getId();
+        }
+
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new NotFoundObjectException("Appointment not found with id: " + appointmentId));
 
         // Check if user has permission to update status
-        if (!appointment.getAdvisorId().equals(userId) && !appointment.getPatientId().equals(userId)) {
+        if (!appointment.getAdvisorId().equals(advisorId) && !appointment.getPatientId().equals(userId)) {
             throw new RuntimeException("Access denied to update appointment status");
         }
 
