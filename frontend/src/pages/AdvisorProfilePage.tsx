@@ -128,7 +128,7 @@ const AdvisorProfilePage: React.FC = () => {
                     </button>
                 </div>
 
-                <div className="profile-content">
+                <div className="profile-content-advisor-profile">
                     {/* Hauptinhalt */}
                     <div className="profile-main">
                         {/* Berater-Kopfbereich */}

@@ -303,4 +303,13 @@
     .sidebar-item {
         gap: 12px;
     }
+
+    .input-with-button {
+        display: block;
+    }
+
+    .btn-add {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
 }

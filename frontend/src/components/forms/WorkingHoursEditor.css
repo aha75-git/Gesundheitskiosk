@@ -126,7 +126,7 @@
     transform: translate(-50%, -50%);
 }
 
-.btn-add {
+.btn-add-working-hours-editor {
     background: #4361ee;
     color: white;
     border: none;
@@ -141,12 +141,12 @@
     font-size: 1.1rem;
 }
 
-.btn-add:hover {
+.btn-add-working-hours-editor:hover {
     background: #3a56d4;
     transform: scale(1.05);
 }
 
-.btn-add:active {
+.btn-add-working-hours-editor:active {
     transform: scale(0.95);
 }
 
@@ -301,7 +301,7 @@
         gap: 1rem;
     }
 
-    .btn-add {
+    .btn-add-working-hours-editor {
         grid-column: span 2;
         justify-self: start;
         width: 100%;
@@ -319,7 +319,7 @@
         gap: 1rem;
     }
 
-    .btn-add {
+    .btn-add-working-hours-editor {
         grid-column: span 1;
     }
 

@@ -28,7 +28,7 @@
     color: #3856d4;
 }
 
-.profile-content {
+.profile-content-advisor-profile {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 2rem;
@@ -662,7 +662,7 @@
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .profile-content {
+    .profile-content-advisor-profile {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }

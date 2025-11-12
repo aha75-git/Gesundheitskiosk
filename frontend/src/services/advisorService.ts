@@ -1,7 +1,8 @@
 import axios from 'axios';
 import type {Advisor, SearchFilters, AdvisorSearchResponse, Review} from '../types/advisor/AdvisorTypes.ts';
 
-const API_BASE_URL = 'http://localhost:8080/api/v1';
+// const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_BASE_URL = '/api/v1';
 
 const api = axios.create({
     baseURL: API_BASE_URL,
