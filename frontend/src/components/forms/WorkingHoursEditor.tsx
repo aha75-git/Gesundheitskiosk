@@ -158,7 +158,7 @@ const WorkingHoursEditor: React.FC<WorkingHoursEditorProps> = ({
                         <button
                             type="button"
                             onClick={addWorkingHour}
-                            className="btn-add"
+                            className="btn-add-working-hours-editor"
                             title="Arbeitszeit hinzufügen"
                         >
                             <i className="fas fa-plus"></i>
@@ -175,9 +175,9 @@ const WorkingHoursEditor: React.FC<WorkingHoursEditorProps> = ({
                         <span>Keine Arbeitszeiten definiert</span>
                     </div>
                 ) : (
-                    workingHours.map((wh, index) => (
+                    workingHours.map((wh) => (
                         <div
-                            key={wh.dayOfWeek}
+                            key={wh.dayOfWeek} 
                             className={`working-hour-chip ${wh.available ? 'available' : 'unavailable'}`}
                         >
                             <div className="chip-content">

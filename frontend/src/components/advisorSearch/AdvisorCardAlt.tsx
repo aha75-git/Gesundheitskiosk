@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
+import type {Advisor} from "../../types/advisor/AdvisorTypes.ts";
 
-const AdvisorCardAlt = ({ advisor }) => {
+const AdvisorCardAlt = ({ advisor } : {advisor:Advisor}) => {
     return (
         <div className="card advisor-card">
             <div className="card-body">

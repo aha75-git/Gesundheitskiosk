@@ -27,6 +27,8 @@ const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
         });
     };
 
+    console.log(isSubmitting);
+
     const getAppointmentTypeName = (type: string) => {
         const types: { [key: string]: string } = {
             'VIDEO_CALL': 'Video-Call',

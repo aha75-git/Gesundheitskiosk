@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { AppointmentBookingData, AdvisorAvailability, BookingWizardStep, AppointmentType, Priority } from '../../types/appointment/AppointmentTypes.ts';
+import type { AppointmentBookingData, AdvisorAvailability, BookingWizardStep } from '../../types/appointment/AppointmentTypes.ts';
 // import { appointmentBookingService } from '../services/appointmentBookingService';
 import AppointmentTypeStep from './AppointmentTypeStep';
 import DateTimeStep from './DateTimeStep';

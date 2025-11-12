@@ -1,4 +1,3 @@
-// import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './api/AuthContext';
 import Layout from './components/layout/Layout.tsx';
@@ -6,8 +5,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import Dashboard from './pages/Dashboard';
-// import AdvisorSearch from './pages/AdvisorSearch';
-// import AppointmentBooking from './pages/AppointmentBooking';
+
 import OAuthRedirect from './components/oauth/OAuthRedirect.tsx';
 import './App.css';
 import ProfilePage from "./pages/ProfilePage.tsx";
