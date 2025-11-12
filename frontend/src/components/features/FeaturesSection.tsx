@@ -19,6 +19,12 @@ export default function FeaturesSection() {
                     <FeatureCard isFontawesome={true} icon={"fas fa-shield-alt"} title={"Sicher"}
                                  description={"Ihre Daten und Privatsphäre sind geschützt"} />
 
+                    <FeatureCard isFontawesome={true} icon={"fas fa-shield-alt"} title={"Mehrsprachige Experten"}
+                                 description={"Beratung in Ihrer Muttersprache"} />
+
+                    <FeatureCard isFontawesome={true} icon={"fas fa-shield-alt"} title={"Verschiedene Beratungsformen"}
+                                 description={"Verschiedene Beratungsformen: Video, Telefon, Chat"} />
+
                 </div>
             </div>
         </section>
