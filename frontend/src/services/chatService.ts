@@ -329,7 +329,8 @@ class ChatService {
                 "Das ist eine interessante Frage. Dazu kann ich Ihnen Folgendes sagen..."
             ];
 
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            const val = Math.random(); // Sensitive
+            const randomResponse = responses[Math.floor(val * responses.length)];
 
             const advisorMessage: ChatMessage = {
                 id: `advisor-${Date.now()}`,
