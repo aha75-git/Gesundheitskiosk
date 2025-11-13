@@ -329,8 +329,19 @@ class ChatService {
                 "Das ist eine interessante Frage. Dazu kann ich Ihnen Folgendes sagen..."
             ];
 
-            const val = Math.random(); // Sensitive
-            const randomResponse = responses[Math.floor(val * responses.length)];
+            // const val = Math.random(); // Sensitive
+
+            const crypto = window.crypto; // || window.msCrypto;
+            const array = new Uint32Array(1);
+            crypto.getRandomValues(array);
+
+            // Extrahiere den Zufallswert aus dem Array
+            const randomValue = array[0];
+
+            // Verwende den Zufallswert, um einen Index für die Antworten zu erstellen
+            const index = Math.floor(randomValue / (0xFFFFFFFF + 1) * responses.length);
+
+            const randomResponse = responses[index];
 
             const advisorMessage: ChatMessage = {
                 id: `advisor-${Date.now()}`,
