@@ -77,7 +77,8 @@ export default function Dashboard() {
                                         <i className="fas fa-user-edit"></i>
                                         <span>Profil bearbeiten</span>
                                     </button>
-                                    <button className="action-btn">
+                                    <button className="action-btn"
+                                            onClick={() => navigate('/dashboard/chat')}>
                                         <i className="fa-solid fa-headset"></i>
                                         <span>Chat</span>
                                     </button>

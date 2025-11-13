@@ -1,0 +1,127 @@
+.chat-session-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-session-list.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 2rem;
+}
+
+.empty-sessions {
+    text-align: center;
+    color: #6c757d;
+}
+
+.empty-sessions i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #e9ecef;
+}
+
+.empty-sessions p {
+    margin: 0 0 0.5rem 0;
+    font-weight: 500;
+}
+
+.empty-sessions span {
+    font-size: 0.9rem;
+}
+
+.session-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border-bottom: 1px solid #f8f9fa;
+    position: relative;
+}
+
+.session-item:hover {
+    background: #f8f9fa;
+}
+
+.session-item.unread {
+    background: #f0f4ff;
+}
+
+.session-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.online-indicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background: #28a745;
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+.session-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.session-header h4 {
+    margin: 0;
+    color: #333;
+    font-size: 1rem;
+}
+
+.session-time {
+    font-size: 0.75rem;
+    color: #6c757d;
+    flex-shrink: 0;
+}
+
+.session-preview {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.session-item.unread .session-preview {
+    color: #333;
+    font-weight: 500;
+}
+
+.unread-badge {
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}

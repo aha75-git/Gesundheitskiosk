@@ -1,0 +1,52 @@
+.message-input {
+    width: 100%;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 25px;
+    padding: 0.5rem;
+}
+
+.attachment-button,
+.send-button {
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #6c757d;
+}
+
+.attachment-button:hover:not(:disabled),
+.send-button:hover:not(:disabled) {
+    background: #e9ecef;
+    color: #4361ee;
+}
+
+.attachment-button:disabled,
+.send-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.message-field {
+    flex: 1;
+    border: none;
+    background: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    outline: none;
+}
+
+.message-field:disabled {
+    opacity: 0.5;
+}

@@ -87,4 +87,9 @@ public interface AdvisorRepository extends MongoRepository<Advisor, String> {
     List<Advisor> findByLanguages(List<String> languages);
 
     Optional<Advisor> findByUserId(String userId);
+
+    Optional<Advisor> findByEmail(String email);
+
+    @Query("{ 'online': true }")
+    List<Advisor> findOnlineAdvisors();
 }
