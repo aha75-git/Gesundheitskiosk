@@ -2,8 +2,8 @@ import type {ChatMessage, ChatSession, Advisor} from '../types/chat/chat.ts';
 
 class ChatService {
     // private apiUrl = process.env.REACT_APP_API_URL;
-    private apiUrl = '/api/v1';
-    private simulatedMessages: Map<string, ChatMessage[]> = new Map();
+    readonly apiUrl = '/api/v1';
+    readonly simulatedMessages: Map<string, ChatMessage[]> = new Map();
     private simulatedSessions: ChatSession[] = [];
     private simulatedAdvisors: Advisor[] = [];
 

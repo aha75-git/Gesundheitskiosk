@@ -30,7 +30,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6c757d;
+    /*color: #6c757d;*/
+    color: #343a40;
     flex-shrink: 0;
 }
 

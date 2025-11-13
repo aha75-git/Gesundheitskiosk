@@ -1,5 +1,4 @@
-// contexts/ChatContext.tsx
-import React, { createContext, /*useContext,*/ useReducer, useEffect } from 'react';
+import React, {createContext, /*useContext,*/ useReducer, useEffect, useMemo} from 'react';
 import type { /*ChatMessage,*/ ChatSession} from '../types/chat/chat.ts';
 import { chatService } from '../services/chatService';
 
@@ -50,8 +49,13 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
         refreshSessions();
     }, []);
 
+    // Verwenden von useMemo, um das value-Objekt zu speichern
+    const value = useMemo(() => {
+        return { state, dispatch, refreshSessions };
+    }, [state, dispatch, refreshSessions]);
+
     return (
-        <ChatContext.Provider value={{ state, dispatch, refreshSessions }}>
+        <ChatContext.Provider value={value}>
             {children}
         </ChatContext.Provider>
     );

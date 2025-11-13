@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../api/AuthContext.tsx';
-// import type {Advisor} from '../types/advisor/AdvisorTypes.ts';
 import AdvisorChatInterface from '../../components/chat/AdvisorChatInterface.tsx';
-import './ChatDashboardPage.css';
-
 import { chatService } from '../../services/chatService.ts';
 import type {ChatSession, Advisor} from '../../types/chat/chat.ts';
 import ChatSessionList from '../../components/chat/ChatSessionList.tsx';

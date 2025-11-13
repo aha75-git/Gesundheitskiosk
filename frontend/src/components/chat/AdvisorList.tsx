@@ -1,4 +1,3 @@
-// components/AdvisorList.tsx
 import React from 'react';
 import type {Advisor} from '../../types/chat/chat.ts';
 import './AdvisorList.css';
