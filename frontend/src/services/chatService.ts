@@ -370,7 +370,19 @@ class ChatService {
         };
 
         // Simuliere Advisor-Antwort nach 3-8 Sekunden
-        const responseDelay = 3000 + Math.random() * 5000;
+        // const responseDelay = 3000 + Math.random() * 5000;
+
+        const crypto = window.crypto;
+        const array = new Uint32Array(1);
+        crypto.getRandomValues(array);
+
+        // Extrahiere den Zufallswert aus dem Array
+        const randomValue = array[0];
+
+        // Skalierung auf den gewünschten Bereich (3000 bis 8000)
+        const responseDelay = 3000 + (randomValue / (0xFFFFFFFF + 1)) * 5000;
+
+
         const timeoutId = setTimeout(simulateAdvisorResponse, responseDelay);
 
         return () => clearTimeout(timeoutId);
