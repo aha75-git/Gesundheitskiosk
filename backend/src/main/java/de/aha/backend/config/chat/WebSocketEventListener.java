@@ -15,7 +15,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 @RequiredArgsConstructor
 public class WebSocketEventListener {
 
-    private final AdvisorService advisorService;
+//    private final AdvisorService advisorService;
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
