@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/users/create").permitAll()
                         .requestMatchers("/api/v1/users/register").permitAll()
                         .requestMatchers("/api/v1/authenticate").permitAll()
+                        .requestMatchers("/ws-chat/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/").permitAll()
                         // Alle anderen Endpoints benötigen Authentifizierung
                         //.anyRequest().authenticated()

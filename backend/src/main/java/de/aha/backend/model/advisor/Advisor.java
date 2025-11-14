@@ -73,4 +73,15 @@ public class Advisor extends AbstractDocument {
 
     @Builder.Default
     private LocalDateTime lastActive = LocalDateTime.now();
+
+    // Advisor Entity (erweitert) um Chat Properties
+    private String image;
+
+    @Builder.Default
+    private Boolean online = false;
+
+    private String responseTime;
+
+    @Builder.Default
+    private LocalDateTime lastSeen = LocalDateTime.now();
 }

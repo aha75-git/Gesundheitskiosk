@@ -1,0 +1,97 @@
+.chat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.chat-list-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.chat-list-item:hover {
+    border-color: #4361ee;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.advisor-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #343a40;
+    flex-shrink: 0;
+}
+
+.advisor-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.advisor-info {
+    flex: 1;
+}
+
+.advisor-info h4 {
+    margin: 0 0 0.25rem 0;
+    color: #333;
+}
+
+.specialization {
+    margin: 0 0 0.5rem 0;
+    color: #4361ee;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.advisor-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.status {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status.online {
+    color: #28a745;
+}
+
+.response-time {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.chat-indicators {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.unread-count {
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+}

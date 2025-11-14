@@ -135,6 +135,6 @@ export const appointmentService = {
         'Selbstwertprobleme',
         'Schlafstörungen',
         'Konzentrationsschwierigkeiten',
-        'Lebenskrisen'
+        'Sonstiges'
     ]
 };

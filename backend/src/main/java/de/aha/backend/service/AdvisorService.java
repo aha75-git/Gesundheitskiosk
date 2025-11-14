@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,8 @@ import static de.aha.backend.mapper.UserMapper.mapToUser;
 public class AdvisorService {
     private final AdvisorRepository advisorRepository;
 
-    /** Creates a new advisor.
+    /**
+     * Creates a new advisor.
      *
      * @param advisor advisor containing user creation details
      */
@@ -80,5 +82,50 @@ public class AdvisorService {
 
         advisor.setWorkingHours(workingHours);
         return advisorRepository.save(advisor);
+    }
+
+    public List<Advisor> getOnlineAdvisors() {
+        log.info("getOnlineAdvisors");
+        return advisorRepository.findOnlineAdvisors();
+    }
+
+    public Advisor updateAdvisorOnlineStatus(String advisorId, boolean online) {
+        log.info("updateAdvisorOnlineStatus: advisorId: {} ; online: {}", advisorId, online);
+
+        Optional<Advisor> advisorOpt = advisorRepository.findById(advisorId);
+        if (advisorOpt.isPresent()) {
+            Advisor advisor = advisorOpt.get();
+            advisor.setOnline(online);
+            advisor.setLastSeen(LocalDateTime.now());
+            return advisorRepository.save(advisor);
+        }
+        throw new RuntimeException("Advisor not found with id: " + advisorId);
+    }
+
+    public Advisor updateAdvisorAvailability(String advisorId, boolean available) {
+        log.info("updateAdvisorAvailability: advisorId: {} ; available: {}", advisorId, available);
+
+        Optional<Advisor> advisorOpt = advisorRepository.findById(advisorId);
+        if (advisorOpt.isPresent()) {
+            Advisor advisor = advisorOpt.get();
+            advisor.setAvailable(available);
+            return advisorRepository.save(advisor);
+        }
+        throw new RuntimeException("Advisor not found with id: " + advisorId);
+    }
+
+    public List<Advisor> searchAdvisors(String specialization, List<String> languages) {
+        log.info("searchAdvisors: specialization: {} ; languages: {}", specialization, languages);
+
+        if (specialization != null && languages != null && !languages.isEmpty()) {
+            // Kombinierte Suche implementieren
+            return advisorRepository.findBySpecializationContainingIgnoreCase(specialization);
+        } else if (specialization != null) {
+            return advisorRepository.findBySpecializationContainingIgnoreCase(specialization);
+        } else if (languages != null && !languages.isEmpty()) {
+            return advisorRepository.findByLanguages(languages);
+        } else {
+            return getAllAdvisors();
+        }
     }
 }

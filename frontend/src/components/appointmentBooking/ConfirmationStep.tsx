@@ -69,7 +69,12 @@ const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
                         <div className="advisor-details">
                             <h4>{advisor.name}</h4>
                             <p>{advisor.specialization}</p>
-                            <span className="consultation-fee">{advisor.consultationFee} €/h</span>
+
+                            <div className="advisor-rating">
+                                <i className="fas fa-star"></i>
+                                <span>{advisor.rating.toFixed(1)}</span>
+                            </div>
+
                         </div>
                     </div>
                 </div>

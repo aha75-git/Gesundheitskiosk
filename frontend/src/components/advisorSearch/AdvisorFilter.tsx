@@ -64,7 +64,17 @@ export default function AdvisorFilter(props: Readonly<AdvisorFilterProps>){
                     ))}
                 </select>
             </div>
-
+            <div className="filter-section">
+                <label className="checkbox-label">
+                    <input
+                        type="checkbox"
+                        checked={filters.availableToday}
+                        onChange={(e) => onFilterChange({ availableToday: e.target.checked })}
+                    />
+                    <span className="checkmark" id="check-advisor-filter-today-available"></span>
+                    Heute verfügbar
+                </label>
+            </div>
             <div className="filter-section">
                 <h4>Mindestbewertung</h4>
                 <div className="rating-filter">
@@ -110,18 +120,6 @@ export default function AdvisorFilter(props: Readonly<AdvisorFilterProps>){
                     </div>
                 </div>
             }
-
-            <div className="filter-section">
-                <label className="checkbox-label">
-                    <input
-                        type="checkbox"
-                        checked={filters.availableToday}
-                        onChange={(e) => onFilterChange({ availableToday: e.target.checked })}
-                    />
-                    <span className="checkmark" id="check-advisor-filter-today-available"></span>
-                    Heute verfügbar
-                </label>
-            </div>
         </div>
     );
 };
