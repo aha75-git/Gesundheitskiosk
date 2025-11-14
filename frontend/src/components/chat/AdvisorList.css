@@ -12,8 +12,19 @@
     cursor: pointer;
     transition: background 0.3s ease;
     border-bottom: 1px solid #f8f9fa;
+
+    /*border-top: none;*/
+    /*border-right: none;*/
+    /*border-left: none;*/
+    /*border: none;*/
+    background: none;
+    text-align: left;
+    width: 100%;
 }
 
+.advisor-item:focus {
+    outline: 2px solid #007bff; /* Für Fokus-Indikator */
+}
 .advisor-item:hover {
     background: #f8f9fa;
 }
@@ -26,7 +37,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /*color: #6c757d;*/
     color: #343a40;
     position: relative;
     flex-shrink: 0;

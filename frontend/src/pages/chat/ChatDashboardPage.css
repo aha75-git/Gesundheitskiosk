@@ -1,5 +1,5 @@
 .chat-dashboard {
-    /*height: 100vh;*/
+    /* Das hier hat etwas verändert. Man muss prüfen wieso. height: 100vh;*/
     background: #f8f9fa;
     display: flex;
 }

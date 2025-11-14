@@ -11,7 +11,7 @@ const AdvisorList: React.FC<AdvisorListProps> = ({ advisors, onSelectAdvisor }) 
     return (
         <div className="advisor-list">
             {advisors.map((advisor) => (
-                <div
+                <button
                     key={advisor.id}
                     className="advisor-item"
                     onClick={() => onSelectAdvisor(advisor)}
@@ -45,7 +45,7 @@ const AdvisorList: React.FC<AdvisorListProps> = ({ advisors, onSelectAdvisor }) 
                             <i className="fas fa-comment"></i>
                         </button>
                     </div>
-                </div>
+                </button>
             ))}
         </div>
     );

@@ -29,7 +29,6 @@
 .attachment-button:hover:not(:disabled),
 .send-button:hover:not(:disabled) {
     background: #e9ecef;
-    /*color: #4361ee;*/
     color: #2f50ef;
 }
 

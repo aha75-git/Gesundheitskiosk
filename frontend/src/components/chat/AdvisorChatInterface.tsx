@@ -19,7 +19,7 @@ const AdvisorChatInterface: React.FC<AdvisorChatInterfaceProps> = ({
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isSending, setIsSending] = useState(false);
-    // const [isTyping, setIsTyping] = useState(false);
+    // Diese Funktionalität könnte später verwendet werden const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     console.log("Session: " + session?.id);

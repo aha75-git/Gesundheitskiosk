@@ -26,10 +26,6 @@ const ChatDashboardPage: React.FC = () => {
         loadInitialData();
     }, [user, navigate]);
 
-    // useEffect(() => {
-    //     loadInitialData();
-    // }, []);
-
     const loadInitialData = async () => {
         try {
             setIsLoading(true);

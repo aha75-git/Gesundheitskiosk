@@ -329,9 +329,7 @@ class ChatService {
                 "Das ist eine interessante Frage. Dazu kann ich Ihnen Folgendes sagen..."
             ];
 
-            // const val = Math.random(); // Sensitive
-
-            const crypto = window.crypto; // || window.msCrypto;
+            const crypto = globalThis.crypto;
             const array = new Uint32Array(1);
             crypto.getRandomValues(array);
 
@@ -372,7 +370,7 @@ class ChatService {
         // Simuliere Advisor-Antwort nach 3-8 Sekunden
         // const responseDelay = 3000 + Math.random() * 5000;
 
-        const crypto = window.crypto;
+        const crypto = globalThis.crypto;
         const array = new Uint32Array(1);
         crypto.getRandomValues(array);
 

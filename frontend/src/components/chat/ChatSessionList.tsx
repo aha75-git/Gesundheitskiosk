@@ -44,7 +44,7 @@ const ChatSessionList: React.FC<ChatSessionListProps> = ({
     return (
         <div className="chat-session-list">
             {sessions.map((session) => (
-                <div
+                <button
                     key={session.id}
                     className={`session-item ${session.unreadCount > 0 ? 'unread' : ''}`}
                     onClick={() => onSelectSession(session)}
@@ -72,7 +72,7 @@ const ChatSessionList: React.FC<ChatSessionListProps> = ({
                             {session.unreadCount}
                         </div>
                     )}
-                </div>
+                </button>
             ))}
         </div>
     );

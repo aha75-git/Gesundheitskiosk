@@ -11,7 +11,7 @@ const ChatList: React.FC<ChatListProps> = ({ advisors, onAdvisorSelect }) => {
     return (
         <div className="chat-list">
             {advisors.map(advisor => (
-                <div
+                <button
                     key={advisor.id}
                     className="chat-list-item"
                     onClick={() => onAdvisorSelect(advisor)}
@@ -37,7 +37,7 @@ const ChatList: React.FC<ChatListProps> = ({ advisors, onAdvisorSelect }) => {
                         <span className="unread-count">3</span>
                         <i className="fas fa-chevron-right"></i>
                     </div>
-                </div>
+                </button>
             ))}
         </div>
     );
